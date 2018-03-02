@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import * as passwordSelectors from './redux/passwords/selectors'
+import * as passwordActions from './redux/passwords/actions'
+
 import './App.css';
 
 class App extends Component {
-  // Initialize state
-  state = { passwords: [] }
 
   // Fetch passwords after first mount
   componentDidMount() {
@@ -11,19 +14,17 @@ class App extends Component {
   }
 
   getPasswords = () => {
-    // Get the passwords and store them in state
-    fetch('/api/passwords')
-      .then(res => res.json())
-      .then(passwords => this.setState({ passwords }));
+    const { dispatchGeneratePassword } = this.props
+    dispatchGeneratePassword()
   }
 
   render() {
-    const { passwords } = this.state;
+    const { lastPasswords } = this.props;
 
     return (
       <div className="App">
         {/* Render the passwords if we have them */}
-        {passwords.length ? (
+        {lastPasswords.count() ? (
           <div>
             <h1>5 Passwords.</h1>
             <ul className="passwords">
@@ -33,7 +34,7 @@ class App extends Component {
                 be the same number of passwords, and they never
                 change positions in the array.
               */}
-              {passwords.map((password, index) =>
+              {lastPasswords.map((password, index) =>
                 <li key={index}>
                   {password}
                 </li>
@@ -61,4 +62,12 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  lastPasswords: passwordSelectors.getLastPassword(state),
+})
+
+const mapDispatchToProps = dispatch => ({
+  dispatchGeneratePassword: () => dispatch(passwordActions.generatePassword()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
