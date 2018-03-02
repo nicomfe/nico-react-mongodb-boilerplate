@@ -4,11 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "1.0.3",
+    "crypto": "1.0.1",
     "express": "^4.15.3",
-    "password-generator": "^2.1.0"
+    "express-session": "1.15.6",
+    "mongodb": "3.0.3",
+    "password-generator": "^2.1.0",
+    "sha256": "0.2.0"
   },
   "scripts": {
     "start": "node index.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-0": "6.24.1"
   }
 }

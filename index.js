@@ -1,8 +1,26 @@
 const express = require('express');
 const path = require('path');
 const generatePassword = require('password-generator');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+
+const api = require('./api');
 
 const app = express();
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use( bodyParser.json() );
+
+app.use(session({
+  secret: 'this is a super session key',
+  resave: true,
+  saveUninitialized: false,
+}))
+
+app.post('/api/create_user', api.create_user)
+app.post('/api/login_with_email_password', api.login_with_email_password)
+app.post('/api/logout', api.logout)
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
