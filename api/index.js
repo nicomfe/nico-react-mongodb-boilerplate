@@ -1,294 +1,254 @@
-const sha256 = require('sha256');
-const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const sha256 = require('sha256')
+const crypto = require('crypto')
+const bcrypt = require('bcrypt')
 
 // change this
-const db_name = 'example_db';
+const dbName = 'example_db'
 
 // Connection URL
-const MongoDbHelper = require('./MongoDbHelper');
-let url = 'mongodb://localhost:27017/'+db_name;
-let mongoDbHelper = new MongoDbHelper(url);
+const MongoDbHelper = require('./MongoDbHelper')
+
+const url = `mongodb://localhost:27017/${dbName}`
+const mongoDbHelper = new MongoDbHelper(url)
 
 // start connection
 mongoDbHelper.start(() => {
-  console.log("mongodb ready")
-});
+  console.log('mongodb ready')
+})
 
 
-const API_KEY = '__api_key__';
+const API_KEY = '__apiKey__'
 
 
-function makeid (count) {
-  if (!count){
-    count = 5;
+function makeid(count = 5) {
+  let text = ''
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  for (let i = 0; i < count; i += 1) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
   }
 
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for( var i=0; i < count; i++ )
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return text;
+  return text
 }
 
 exports.create_user = (req, res) => {
+  const password = req.body.password
+  const email = req.body.email
+  // const apiKey = req.headers.authorization
 
-  let password =  req.body.password;
-  let email =  req.body.email;
-  let api_key =  req.headers.authorization
-
-  // if (api_key !== API_KEY){
-  //   res.json({ status: 'error', detail: 'api key is invalid' });
-  //   return;
+  // if (apiKey !== API_KEY){
+  //   res.json({ status: 'error', detail: 'api key is invalid' })
+  //   return
   // }
 
-  let user_info = {}
-  let login_token
+  const userInfo = {}
+  let loginToken
 
-  let find_param = {
-    'emails.address':email
+  const findParam = {
+    'emails.address': email,
   }
-  mongoDbHelper.collection("users").count(find_param)
-  .then((results) => {
+
+  mongoDbHelper.collection('users').count(findParam).then((results) => {
     return new Promise((resolve, reject) => {
-      if (results != 0){
-        reject("user already exist")
+      if (results !== 0) {
+        reject('user already exist')
       }
       resolve()
     })
-  })
-  .then(() => {
+  }).then(() => {
     // bcrypt of password
-    let password2 = sha256(password)
-    var bcrypt_hash = bcrypt.hashSync(password2, 10);
+    const password2 = sha256(password)
+    const bcryptHash = bcrypt.hashSync(password2, 10)
 
     // login token which to use login
-    login_token = makeid('4') + parseInt(new Date().getTime()).toString(36);
-    const hashed_token = crypto.createHash('sha256').update(login_token).digest('base64');
+    loginToken = makeid('4') + parseInt(new Date().getTime(), 10).toString(36)
+    const hashedToken = crypto.createHash('sha256').update(loginToken).digest('base64')
 
-    const token_object = {
-      'when':new Date(),
-      'hashedToken':hashed_token,
-    };
+    const tokenObject = {
+      when: new Date(),
+      hashedToken,
+    }
 
-    let insert_params = {
+    const insertParams = {
       createdAt: new Date(),
-      services:{
-        password : {
-          bcrypt : bcrypt_hash
+      services: {
+        password: {
+          bcrypt: bcryptHash,
         },
-        resume : {
-          loginTokens : [token_object]
+        resume: {
+          loginTokens: [tokenObject],
         },
-        email : {
-          verificationTokens : [
+        email: {
+          verificationTokens: [
             {
               // nameHash : nameHash,
-              address : email,
-              when : new Date(),
-            }
-          ]
+              address: email,
+              when: new Date(),
+            },
+          ],
         },
       },
-      emails : [
+      emails: [
         {
-          "address" : email,
-          "verified" : false
-        }
+          address: email,
+          verified: false,
+        },
       ],
-      profile : {},
+      profile: {},
     }
 
     // insert
-    return mongoDbHelper.collection("users").insert(insert_params)
-  })
-  .then((results) => {
-
-    if ( results === null ) {
-      res.json({ status: 'error', detail: 'no such user' });
-      return;
+    return mongoDbHelper.collection('users').insert(insertParams)
+  }).then((results) => {
+    if (results === null) {
+      res.json({ status: 'error', detail: 'no such user' })
+      return
     }
 
-    user_info._id = results._id;
-    user_info.profile = results.profile;
+    userInfo._id = results._id
+    userInfo.profile = results.profile
 
-    // req.session.userId = user_info._id
-    req.session.login_token = login_token // maybe not necessary
-
+    // req.session.userId = userInfo._id
+    // req.session.login_token = loginToken // maybe not necessary
     res.json({
       status: 'success',
-      user: user_info,
-      login_token: login_token,
+      user: userInfo,
+      login_token: loginToken,
     })
-
+  }).catch((err) => {
+    res.json({ status: 'error', detail: err })
   })
-  .catch((err) => {
-    res.json({ status: 'error', detail: err });
-  })
-};
+}
 
 exports.login_with_email_password = (req, res) => {
+  const password = req.body.password
+  const email = req.body.email
+  // let apiKey =  req.headers.authorization
 
-  let password =  req.body.password;
-  let email =  req.body.email;
-
-  let api_key =  req.headers.authorization
-
-  // if (api_key !== API_KEY){
-  //   res.json({ status: 'error', detail: 'api key is invalid 2' });
-  //   return;
+  // if (apiKey !== API_KEY){
+  //   res.json({ status: 'error', detail: 'api key is invalid 2' })
+  //   return
   // }
 
-  let find_param = {
-    'emails.address':email
+  const findParam = {
+    'emails.address': email,
   }
 
-  let user_info = {};
-  let login_token
+  const userInfo = {}
+  let loginToken
 
   // insert
-  mongoDbHelper.collection("users").findOne(find_param)
-  .then((results) => {
+  mongoDbHelper.collection('users').findOne(findParam).then((results) => {
     // check password
-
-    return new Promise( (resolve, reject) => {
-
-      if (!results){
-        reject("no such user")
+    return new Promise((resolve, reject) => {
+      if (!results) {
+        reject('no such user')
       }
-      if (!results.services || !results.services.password || !results.services.password.bcrypt){
-        reject("something must be wrong")
+      if (!results.services || !results.services.password || !results.services.password.bcrypt) {
+        reject('something must be wrong')
       }
 
       // set user info
-      user_info._id = results._id;
-      user_info.profile = results.profile;
+      userInfo._id = results._id
+      userInfo.profile = results.profile
 
-      let password2 = sha256(password)
+      const password2 = sha256(password)
 
-      const saved_hash = results.services.password.bcrypt
-
-      bcrypt.compare(password2, saved_hash, (err, res) => {
-        if (err){
+      const savedHash = results.services.password.bcrypt
+      bcrypt.compare(password2, savedHash, (err, compareRes) => {
+        if (err) {
           reject(err)
         }
 
-        if (res === true){
+        if (compareRes === true) {
           resolve()
         } else {
-          reject("password is not valid")
+          reject('password is not valid')
         }
-      });
-    } )
-  })
-  .then(() => {
+      })
+    })
+  }).then(() => {
     // issue token
-
-    let find_param = {
-      _id: user_info._id
+    const findParamById = {
+      _id: userInfo._id,
     }
 
     // login token
-    login_token = makeid('4') + parseInt(new Date().getTime()).toString(36);
-    const hashed_token = crypto.createHash('sha256').update(login_token).digest('base64');
+    loginToken = makeid('4') + parseInt(new Date().getTime(), 10).toString(36)
+    const hashedToken = crypto.createHash('sha256').update(loginToken).digest('base64')
+    const tokenObject = {
+      when: new Date(),
+      hashedToken,
+    }
 
-    const token_object = {
-      'when':new Date(),
-      'hashedToken':hashed_token,
-    };
-
-    let upd_param = {
-      '$push':{
-        'services.resume.loginTokens':token_object
-      }
-    };
+    const updParam = {
+      $push: {
+        'services.resume.loginTokens': tokenObject,
+      },
+    }
 
     // update
-    return mongoDbHelper.collection("users").update(find_param, upd_param)
-  })
-  .then((results) => {
-
+    return mongoDbHelper.collection('users').update(findParamById, updParam)
+  }).then(() => {
     // set session
-    req.session.login_token
-
     res.json({
       status: 'success',
       user: {
-        ...user_info,
+        ...userInfo,
         email,
       },
-      login_token: login_token,
+      login_token: loginToken,
     })
-
-  })
-  .catch((err) => {
-    res.status(500).json({status: 'error', detail: err})
+  }).catch((err) => {
+    res.status(500).json({ status: 'error', detail: err })
   })
 }
 
 exports.logout = (req, res) => {
-
-  // let login_token = req.body.login_token;
-  let login_token = req.session.login_token;
-  if (!login_token){
+  // let login_token = req.body.login_token
+  const loginToken = req.session.login_token
+  if (!loginToken) {
     // user is not login
-    res.json({status: 'success'})
-    return;
+    res.json({ status: 'success' })
+    return
   }
 
-  let api_key =  req.headers.authorization
+  const apiKey = req.headers.authorization
 
-
-  if (api_key !== API_KEY){
-    res.json({ status: 'error', detail: 'api key is invalid' });
-    return;
+  if (apiKey !== API_KEY) {
+    res.json({ status: 'error', detail: 'api key is invalid' })
+    return
   }
 
-  const hashed_token = crypto.createHash('sha256').update(login_token).digest('base64');
-  let find_param = {
-    'services.resume.loginTokens':{
-      '$elemMatch':{
-        'hashedToken':hashed_token
-      }
-    }
+  const hashedToken = crypto.createHash('sha256').update(loginToken).digest('base64')
+  const findParam = {
+    'services.resume.loginTokens': {
+      $elemMatch: {
+        hashedToken,
+      },
+    },
   }
 
   // find user
-  mongoDbHelper.collection("users").findOne(find_param)
-  .then((results) => {
-
-    if (results === null){
-      return Promise.reject("no such token")
+  mongoDbHelper.collection('users').findOne(findParam).then((results) => {
+    if (results === null) {
+      return Promise.reject('no such token')
     }
 
-    let find_param = {
-      '_id':results._id
-    };
-    var upd_param = {
-      '$pull':{
-        'services.resume.loginTokens':{
-          'type':'ios'
-        }
-      }
-    };
-    return mongoDbHelper.collection("users").update(find_param, upd_param)
-  })
-  .then(() => {
-    return new Promise((resolve, reject) => {
+    const findParamById = {
+      _id: results._id,
+    }
 
-    })
-    req.session.destroy((err) => {
-      if (err) {
-        reject(err)
-      }
-      resolve()
-    })
-  })
-  .then(() => {
-    res.json({status: 'success'})
-  })
-  .catch((err) => {
-     res.json({status: 'error', detail: err})
+    const updParam = {
+      $pull: {
+        'services.resume.loginTokens': {
+          type: 'ios',
+        },
+      },
+    }
+    return mongoDbHelper.collection('users').update(findParamById, updParam)
+  }).then(() => {
+    res.json({ status: 'success' })
+  }).catch((err) => {
+    res.json({ status: 'error', detail: err })
   })
 }

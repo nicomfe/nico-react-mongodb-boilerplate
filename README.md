@@ -1,3 +1,6 @@
+Start Mongo
+mongod --dbpath <PATH_TO_YOUR_DB_FILE>
+
 Start the server:
 npm start
 
