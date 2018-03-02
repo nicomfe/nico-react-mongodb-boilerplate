@@ -10,7 +10,7 @@
     "react-scripts": "1.1.1",
     "redux": "3.7.2",
     "redux-immutablejs": "0.0.8",
-    "redux-thunk": "2.2.0",
+    "redux-promise-middleware": "5.0.0",
     "reselect": "3.0.1"
   },
   "scripts": {

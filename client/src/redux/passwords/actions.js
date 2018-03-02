@@ -1,22 +1,11 @@
-export const GENERATE_PASSWORD_REQUEST = 'GENERATE_PASSWORD_REQUEST'
-export const GENERATE_PASSWORD_SUCCESS = 'GENERATE_PASSWORD_SUCCESS'
+export const GENERATE_PASSWORD = 'GENERATE_PASSWORD'
+export const GENERATE_PASSWORD_PENDING = 'GENERATE_PASSWORD_PENDING'
+export const GENERATE_PASSWORD_FULFILLED = 'GENERATE_PASSWORD_FULFILLED'
+export const GENERATE_PASSWORD_REJECTED = 'GENERATE_PASSWORD_REJECTED'
 
-export const generatePassword = (item) => {
-  return (dispatch) => {
-    dispatch(generatePasswordRequest(item))
-    fetch('/api/passwords')
-      .then(res => res.json())
-      .then((data) => {
-        dispatch(generatePasswordSuccess(data))
-      })
-  }
-}
-
-export const generatePasswordRequest = () => ({
-  type: GENERATE_PASSWORD_REQUEST,
-})
-
-export const generatePasswordSuccess = (data) => ({
-  type: GENERATE_PASSWORD_SUCCESS,
-  payload: data,
+export const generatePassword = () => ({
+  type: GENERATE_PASSWORD,
+  payload: {
+    promise: fetch('/api/passwords').then(data => data.json())
+  },
 })

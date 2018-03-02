@@ -1,14 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
+import promiseMiddleware from 'redux-promise-middleware'
 
 import rootReducer from '../redux/reducers'
-
-const middleware = [thunk].filter(Boolean)
 
 
 function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, compose(
-    applyMiddleware(...middleware),
+    applyMiddleware(promiseMiddleware()),
   ))
 
   return store
