@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import Immutable from 'immutable'
 import { createLogger } from 'redux-logger'
-import promiseMiddleware from 'redux-promise-middleware'
 
+import promiseMiddleware from '../redux/utils/promiseMiddleware'
 import rootReducer from '../redux/reducers'
 
 function configureStore(initialState = {}) {
@@ -11,7 +11,7 @@ function configureStore(initialState = {}) {
     Immutable.fromJS(initialState),
     compose(
       applyMiddleware(
-        promiseMiddleware(),
+        promiseMiddleware,
         createLogger({
           stateTransformer: (state) => {
             return state.toJS()

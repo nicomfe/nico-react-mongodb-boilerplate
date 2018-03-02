@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as passwordSelectors from './redux/passwords/selectors'
+import * as authSelectors from './redux/auth/selectors'
 import * as passwordActions from './redux/passwords/actions'
+import NavBar from './components/NavBar'
 
 import './App.css';
 
@@ -19,10 +21,11 @@ class App extends Component {
   }
 
   render() {
-    const { lastPasswords } = this.props;
+    const { lastPasswords, currentUser } = this.props;
 
     return (
       <div className="App">
+        <NavBar currentUser={currentUser} />
         {/* Render the passwords if we have them */}
         {lastPasswords.count() ? (
           <div>
@@ -64,6 +67,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({
   lastPasswords: passwordSelectors.getLastPassword(state),
+  currentUser: authSelectors.getCurrentUser(state),
 })
 
 const mapDispatchToProps = dispatch => ({

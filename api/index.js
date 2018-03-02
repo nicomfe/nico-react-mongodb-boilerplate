@@ -132,6 +132,7 @@ exports.login_with_email_password = (req, res) => {
 
   let password =  req.body.password;
   let email =  req.body.email;
+
   let api_key =  req.headers.authorization
 
   // if (api_key !== API_KEY){
@@ -213,13 +214,16 @@ exports.login_with_email_password = (req, res) => {
 
     res.json({
       status: 'success',
-      user: user_info,
+      user: {
+        ...user_info,
+        email,
+      },
       login_token: login_token,
     })
 
   })
   .catch((err) => {
-    res.json({status: 'error', detail: err})
+    res.status(500).json({status: 'error', detail: err})
   })
 }
 
