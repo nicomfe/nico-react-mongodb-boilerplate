@@ -11,6 +11,7 @@
     "express-session": "1.15.6",
     "mongodb": "3.0.3",
     "password-generator": "^2.1.0",
+    "prop-types": "15.6.1",
     "react-immutable-proptypes": "2.1.0",
     "sha256": "0.2.0",
     "uuid": "3.2.1"

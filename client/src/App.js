@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import * as passwordSelectors from './redux/passwords/selectors'
 import * as authSelectors from './redux/auth/selectors'
 import * as passwordActions from './redux/passwords/actions'
-import NavBar from './components/NavBar'
+import NavBarContainer from './containers/NavBarContainer'
 
 import './App.css'
 
@@ -24,7 +24,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <NavBar currentUser={currentUser} />
+        <NavBarContainer />
         {/* Render the passwords if we have them */}
         {lastPasswords.count() ? (
           <div>
