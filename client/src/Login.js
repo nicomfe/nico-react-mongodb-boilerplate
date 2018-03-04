@@ -24,7 +24,7 @@ class Login extends React.Component {
     event.preventDefault()
     const { dispatchLogin } = this.props
     const { email, password } = this.state
-    dispatchLogin({ email, password })
+    dispatchLogin({ username: email, password })
   }
 
   render() {

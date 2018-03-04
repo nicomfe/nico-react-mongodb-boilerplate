@@ -3,14 +3,23 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { connect } from 'react-redux'
 
+// selectors
 import * as passwordSelectors from './redux/passwords/selectors'
 import * as authSelectors from './redux/auth/selectors'
+// actions
+import * as authActions from './redux/auth/actions'
 import * as passwordActions from './redux/passwords/actions'
+// components
 import NavBarContainer from './containers/NavBarContainer'
 
 import './App.css'
 
 class App extends React.Component {
+  componentWillMount() {
+    const { dispatchGetCurrentSession } = this.props
+    dispatchGetCurrentSession()
+  }
+
   // Fetch passwords after first mount
   componentDidMount() {
     this.getPasswords()
@@ -76,6 +85,7 @@ class App extends React.Component {
 
 App.propTypes = {
   dispatchGeneratePassword: PropTypes.func.isRequired,
+  dispatchGetCurrentSession: PropTypes.func.isRequired,
   lastPasswords: ImmutablePropTypes.list,
   currentUser: ImmutablePropTypes.map,
 }
@@ -87,6 +97,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   dispatchGeneratePassword: () => dispatch(passwordActions.generatePassword()),
+  dispatchGetCurrentSession: () => dispatch(authActions.getCurrentSession()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

@@ -4,6 +4,7 @@ export const fetchRequest = (url, options) => {
       headers: {
         'content-type': 'application/json',
       },
+      credentials: 'same-origin',
       ...options,
     }).then((result) => {
       if (result.status !== 401 && (result.status < 200 || result.status >= 300)) {

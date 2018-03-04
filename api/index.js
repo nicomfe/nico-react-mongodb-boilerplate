@@ -1,15 +1,43 @@
 const sha256 = require('sha256')
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 
-// change this
-const dbName = 'example_db'
+const config = require('./config')
+
+passport.use(new LocalStrategy((username, password, done) => {
+  const findParam = {
+    'emails.address': username,
+  }
+  mongoDbHelper.collection('users').findOne(findParam).then((results) => {
+    if (!results) {
+      return done(null, false, { message: 'Incorrect username.' })
+    }
+    if (!results.services || !results.services.password || !results.services.password.bcrypt) {
+      return done(null, false, { message: 'Something is wrong.' })
+    }
+
+    const password2 = sha256(password)
+
+    const savedHash = results.services.password.bcrypt
+    return bcrypt.compare(password2, savedHash, (err, compareRes) => {
+      if (err) {
+        return done(null, false, { message: err })
+      }
+
+      if (compareRes === true) {
+        return done(null, results)
+      }
+      return done(null, false, { message: 'Incorrect password.' })
+    })
+  })
+}))
 
 // Connection URL
 const MongoDbHelper = require('./MongoDbHelper')
 
-const url = `mongodb://localhost:27017/${dbName}`
-const mongoDbHelper = new MongoDbHelper(url)
+const mongoDbHelper = new MongoDbHelper(config.MONGO_URL)
 
 // start connection
 mongoDbHelper.start(() => {
@@ -119,136 +147,30 @@ exports.create_user = (req, res) => {
   })
 }
 
-exports.login_with_email_password = (req, res) => {
-  const password = req.body.password
-  const email = req.body.email
-  // let apiKey =  req.headers.authorization
+// exports.login_with_email_password = passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' })
 
-  // if (apiKey !== API_KEY){
-  //   res.json({ status: 'error', detail: 'api key is invalid 2' })
-  //   return
-  // }
-
-  const findParam = {
-    'emails.address': email,
-  }
-
-  const userInfo = {}
-  let loginToken
-
-  // insert
-  mongoDbHelper.collection('users').findOne(findParam).then((results) => {
-    // check password
-    return new Promise((resolve, reject) => {
-      if (!results) {
-        reject('no such user')
-      }
-      if (!results.services || !results.services.password || !results.services.password.bcrypt) {
-        reject('something must be wrong')
-      }
-
-      // set user info
-      userInfo._id = results._id
-      userInfo.profile = results.profile
-
-      const password2 = sha256(password)
-
-      const savedHash = results.services.password.bcrypt
-      bcrypt.compare(password2, savedHash, (err, compareRes) => {
-        if (err) {
-          reject(err)
-        }
-
-        if (compareRes === true) {
-          resolve()
-        } else {
-          reject('password is not valid')
-        }
-      })
-    })
-  }).then(() => {
-    // issue token
-    const findParamById = {
-      _id: userInfo._id,
+exports.login_with_email_password = (req, res, next) => {
+  // Do email and password validation for the server
+  passport.authenticate('local', (authErr, user, info) => {
+    if (authErr) {
+      res.status(500).send(`Ups. Something broke! ${authErr}`)
+    } else if (info) {
+      res.status(401).send(info)
+    } else {
+      res.status(200).send(JSON.stringify(user))
     }
-
-    // login token
-    loginToken = makeid('4') + parseInt(new Date().getTime(), 10).toString(36)
-    const hashedToken = crypto.createHash('sha256').update(loginToken).digest('base64')
-    const tokenObject = {
-      when: new Date(),
-      hashedToken,
-    }
-
-    const updParam = {
-      $push: {
-        'services.resume.loginTokens': tokenObject,
-      },
-    }
-
-    // update
-    return mongoDbHelper.collection('users').update(findParamById, updParam)
-  }).then(() => {
-    // set session
-    res.json({
-      status: 'success',
-      user: {
-        ...userInfo,
-        email,
-      },
-      login_token: loginToken,
-    })
-  }).catch((err) => {
-    res.status(500).json({ status: 'error', detail: err })
-  })
+  })(req, res, next)
 }
 
 exports.logout = (req, res) => {
-  // let login_token = req.body.login_token
-  const loginToken = req.session.login_token
-  if (!loginToken) {
-    // user is not login
-    res.json({ status: 'success' })
-    return
+  req.logout()
+  res.json({ status: 'success' })
+  return res.status(200)
+}
+
+exports.get_current_session = (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.status(200).send(JSON.stringify(req.user))
   }
-
-  const apiKey = req.headers.authorization
-
-  if (apiKey !== API_KEY) {
-    res.json({ status: 'error', detail: 'api key is invalid' })
-    return
-  }
-
-  const hashedToken = crypto.createHash('sha256').update(loginToken).digest('base64')
-  const findParam = {
-    'services.resume.loginTokens': {
-      $elemMatch: {
-        hashedToken,
-      },
-    },
-  }
-
-  // find user
-  mongoDbHelper.collection('users').findOne(findParam).then((results) => {
-    if (results === null) {
-      return Promise.reject('no such token')
-    }
-
-    const findParamById = {
-      _id: results._id,
-    }
-
-    const updParam = {
-      $pull: {
-        'services.resume.loginTokens': {
-          type: 'ios',
-        },
-      },
-    }
-    return mongoDbHelper.collection('users').update(findParamById, updParam)
-  }).then(() => {
-    res.json({ status: 'success' })
-  }).catch((err) => {
-    res.json({ status: 'error', detail: err })
-  })
+  return res.status(200)
 }

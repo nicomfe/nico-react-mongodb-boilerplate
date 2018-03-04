@@ -2,6 +2,7 @@ import { fetchRequest } from '../fetchUtil'
 
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const GET_CURRENT_SESSION = 'GET_CURRENT_SESSION'
 
 export const login = data => ({
   types: LOGIN,
@@ -18,5 +19,12 @@ export const logout = () => ({
   types: LOGOUT,
   meta: {
     fetch: fetchRequest.bind(null, '/api/logout', { method: 'POST' }),
+  },
+})
+
+export const getCurrentSession = () => ({
+  types: GET_CURRENT_SESSION,
+  meta: {
+    fetch: fetchRequest.bind(null, '/api/get_current_session'),
   },
 })
