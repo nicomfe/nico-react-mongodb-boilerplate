@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import { connect } from 'react-redux'
 
 import * as passwordSelectors from './redux/passwords/selectors'
@@ -8,7 +10,7 @@ import NavBarContainer from './containers/NavBarContainer'
 
 import './App.css'
 
-class App extends Component {
+class App extends React.Component {
   // Fetch passwords after first mount
   componentDidMount() {
     this.getPasswords()
@@ -17,6 +19,17 @@ class App extends Component {
   getPasswords = () => {
     const { dispatchGeneratePassword } = this.props
     dispatchGeneratePassword()
+  }
+
+  showButton = () => {
+    return (
+      <button
+        className="more"
+        onClick={this.getPasswords}
+      >
+        Get More
+      </button>
+    )
   }
 
   render() {
@@ -42,11 +55,7 @@ class App extends Component {
                 </li>
               )}
             </ul>
-            <button
-              className="more"
-              onClick={this.getPasswords}>
-              Get More
-            </button>
+            {currentUser ? this.showButton() : <div>Login to generate more passwords</div>}
           </div>
         ) : (
           // Render a helpful message otherwise
@@ -54,7 +63,8 @@ class App extends Component {
             <h1>No passwords :(</h1>
             <button
               className="more"
-              onClick={this.getPasswords}>
+              onClick={this.getPasswords}
+            >
               Try Again?
             </button>
           </div>
@@ -64,7 +74,13 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+App.propTypes = {
+  dispatchGeneratePassword: PropTypes.func.isRequired,
+  lastPasswords: ImmutablePropTypes.list,
+  currentUser: ImmutablePropTypes.map,
+}
+
+const mapStateToProps = state => ({
   lastPasswords: passwordSelectors.getLastPassword(state),
   currentUser: authSelectors.getCurrentUser(state),
 })

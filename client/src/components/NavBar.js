@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const NavBar = ({ currentUser, dispatchLogout }) => {
   if (currentUser) {
-    return <div>{`Logged with ${currentUser.get('email')}`} <a href onClick={dispatchLogout}>Logout</a></div>
+    return <div>{`Logged with ${currentUser.get('email')}`} <button onClick={dispatchLogout}>Logout</button></div>
   }
   return <a href="/login">Login</a>
 }
