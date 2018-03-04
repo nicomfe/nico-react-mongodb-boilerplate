@@ -2,7 +2,7 @@ export const fetchRequest = (url, options) => {
   return new Promise((resolve, reject) => {
     fetch(url, {
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
       },
       ...options,
     }).then((result) => {
@@ -10,12 +10,11 @@ export const fetchRequest = (url, options) => {
         result.json().then(errorData => reject(errorData))
       } else {
         // successful!
-        result.json().then(data => {
+        result.json().then((data) => {
           resolve(data)
         })
       }
-    })
-    .catch((error) => {
+    }).catch((error) => {
       reject(error)
     })
   })

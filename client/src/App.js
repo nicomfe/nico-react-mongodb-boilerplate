@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import * as passwordSelectors from './redux/passwords/selectors'
 import * as authSelectors from './redux/auth/selectors'
 import * as passwordActions from './redux/passwords/actions'
 import NavBar from './components/NavBar'
 
-import './App.css';
+import './App.css'
 
 class App extends Component {
-
   // Fetch passwords after first mount
   componentDidMount() {
-    this.getPasswords();
+    this.getPasswords()
   }
 
   getPasswords = () => {
@@ -21,7 +20,7 @@ class App extends Component {
   }
 
   render() {
-    const { lastPasswords, currentUser } = this.props;
+    const { lastPasswords, currentUser } = this.props
 
     return (
       <div className="App">
@@ -61,7 +60,7 @@ class App extends Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
@@ -74,4 +73,4 @@ const mapDispatchToProps = dispatch => ({
   dispatchGeneratePassword: () => dispatch(passwordActions.generatePassword()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App)
