@@ -7,7 +7,7 @@ export const fetchRequest = (url, options) => {
       credentials: 'same-origin',
       ...options,
     }).then((result) => {
-      if (result.status !== 401 && (result.status < 200 || result.status >= 300)) {
+      if (result.status < 200 || result.status >= 300) {
         result.json().then(errorData => reject(errorData))
       } else {
         // successful!

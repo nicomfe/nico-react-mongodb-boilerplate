@@ -31,7 +31,7 @@ const fetch = store => next => (action) => {
   next({ type: REQUEST, payload })
 
   return action.meta.fetch().then((response) => {
-    let value = response
+    const value = response
     if (value.error) {
       throw value.error
     }

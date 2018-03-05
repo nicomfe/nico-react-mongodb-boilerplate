@@ -5,10 +5,13 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
 const dbSession = require('./db/session')
+const connectDb = require('./db/connect')
 
 const api = require('./api')
 
 const app = express()
+
+connectDb()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -44,12 +47,12 @@ app.post('/api/create_user', api.create_user)
 app.post('/api/login_with_email_password', (req, res, next) => {
   passport.authenticate('local', (authErr, user, info) => {
     if (authErr) {
-      res.status(500).send('Ups. Something broke!', authErr)
+      res.status(500).send(authErr)
     } else if (info) {
-      res.status(401).send('unauthorized', info)
+      res.status(401).send(info)
     } else {
       req.logIn(user, (err) => {
-        if (err) res.status(500).send('Ups. Something broke!', err)
+        if (err) res.status(500).send(err)
         res.status(200).send(JSON.stringify(user))
       })
     }
