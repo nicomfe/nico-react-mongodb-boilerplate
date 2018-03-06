@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import ImmutablerPropTypes from 'react-immutable-proptypes'
 
+import styles from './page.module.css'
 import * as authSelectors from '../redux/auth/selectors'
 import * as authActions from '../redux/auth/actions'
 
@@ -33,7 +34,7 @@ class Login extends React.Component {
     if (currentUser) {
       return <Redirect to="/" />
     }
-    return (<form onSubmit={this.handleSubmit}>
+    return (<form onSubmit={this.handleSubmit} className={styles.container}>
       Email <input type="text" name="email" value={email} onChange={this.handleChange} />
       Password <input type="password" name="password" value={password} onChange={this.handleChange} />
       <button type="submit">Signup</button>
