@@ -1,18 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import ImmutablerPropTypes from 'react-immutable-proptypes'
 
-import * as authSelectors from './redux/auth/selectors'
-import * as authActions from './redux/auth/actions'
+import * as authSelectors from '../redux/auth/selectors'
+import * as authActions from '../redux/auth/actions'
 
 class Login extends React.Component {
   constructor() {
     super()
-    this.state = {
-      email: 'nico@nico.com',
-      password: 'password',
-    }
+    this.state = {}
   }
 
   handleChange = (event) => {
@@ -35,14 +33,16 @@ class Login extends React.Component {
     }
     return (<form onSubmit={this.handleSubmit}>
       Email <input type="text" name="email" value={email} onChange={this.handleChange} />
-      Password <input type="text" name="password" value={password} onChange={this.handleChange} />
+      Password <input type="password" name="password" value={password} onChange={this.handleChange} />
       <button type="submit">Login</button>
+      <small>If you dont want to create a user just use nico@nico.com/password</small>
     </form>)
   }
 }
 
 Login.propTypes = {
   currentUser: ImmutablerPropTypes.map,
+  dispatchLogin: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
