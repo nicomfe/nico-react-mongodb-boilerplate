@@ -46,7 +46,6 @@ UserSchema.pre('save', encryptPassword)
  */
 UserSchema.methods = {
   comparePassword(candidatePassword, cb) {
-    console.log('acaaaaaaaa')
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
       if (err) return cb(err)
       return cb(null, isMatch)
