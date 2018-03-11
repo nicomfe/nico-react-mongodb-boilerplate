@@ -6,7 +6,10 @@ import './NavBar.css'
 
 const NavBar = ({ currentUser, dispatchLogout }) => {
   if (currentUser) {
-    return <div>{`Logged with ${currentUser.get('email')}`} <button onClick={dispatchLogout}>Logout</button></div>
+    return (<div>
+      {`Logged with ${currentUser.get('email')}`} <button onClick={dispatchLogout}>Logout</button>
+      <a href="/profile">Profile</a>
+    </div>)
   }
   return (<div className="menu">
     <a href="/login">Login</a>
