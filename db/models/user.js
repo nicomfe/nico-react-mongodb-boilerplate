@@ -14,9 +14,11 @@ const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
   email: { type: String, lowercase: true },
+  emailVerified: { type: Boolean, default: false },
   password: String,
   tokens: Array,
   profile: {},
+  verifyEmailToken: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   google: {},

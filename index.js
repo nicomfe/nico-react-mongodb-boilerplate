@@ -44,6 +44,8 @@ app.use(passport.session())
 
 app.post('/api/create_user', api.create_user)
 
+app.post('/api/verify_account', api.verify_account)
+
 app.post('/api/login_with_email_password', (req, res, next) => {
   passport.authenticate('local', (authErr, user, info) => {
     if (authErr) {
@@ -52,8 +54,9 @@ app.post('/api/login_with_email_password', (req, res, next) => {
       res.status(401).send(info)
     } else {
       req.logIn(user, (err) => {
-        if (err) res.status(500).send(err)
-        res.status(200).send(JSON.stringify(user))
+        if (err) return res.status(500).send(err)
+        if (!user.emailVerified) return res.status(500).send({ message: 'Email not verified yet.' })
+        return res.status(200).send(JSON.stringify(user))
       })
     }
   })(req, res, next)

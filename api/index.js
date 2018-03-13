@@ -1,5 +1,6 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const uuid = require('uuid/v4')
 
 const localPassport = require('../db/passport/local')
 const User = require('../db/models/user')
@@ -18,13 +19,11 @@ mongoDbHelper.start(() => {
   console.log('mongodb ready')
 })
 
-
-const API_KEY = '__apiKey__'
-
 exports.create_user = (req, res, next) => {
   const user = new User({
     email: req.body.email,
     password: req.body.password,
+    verifyEmailToken: uuid(),
   })
 
   return User.findOne({ email: req.body.email }, (findErr, existingUser) => {
@@ -47,19 +46,6 @@ exports.create_user = (req, res, next) => {
   })
 }
 
-exports.login_with_email_password = (req, res, next) => {
-  // Do email and password validation for the server
-  passport.authenticate('local', (authErr, user, info) => {
-    if (authErr) {
-      res.status(500).send(`Ups. Something broke! ${authErr}`)
-    } else if (info) {
-      res.status(401).send(info)
-    } else {
-      res.status(200).send(JSON.stringify(user))
-    }
-  })(req, res, next)
-}
-
 exports.logout = (req, res) => {
   req.logout()
   res.json({ status: 'success' })
@@ -71,4 +57,24 @@ exports.get_current_session = (req, res) => {
     return res.status(200).send(JSON.stringify(req.user))
   }
   return res.status(200)
+}
+
+exports.verify_account = (req, res) => {
+  return User.findOne({ email: req.body.email }, (findErr, existingUser) => {
+    if (existingUser) {
+      if (existingUser.emailVerified) {
+        return res.status(200).send({ message: 'Account already verified' })
+      }
+      if (req.body.token === existingUser.verifyEmailToken) {
+        return Object.assign(existingUser, { emailVerified: true }).save((err, updateData) => {
+          if (err) {
+            return res.status(400).send(err)
+          }
+          return res.status(200).send(updateData)
+        })
+      }
+      return res.status(400).send({ message: 'Invalid token' })
+    }
+    return res.status(400).send({ message: 'No user found for the given email' })
+  })
 }

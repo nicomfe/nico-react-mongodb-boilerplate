@@ -4,6 +4,7 @@ export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const SIGNUP = 'SIGNUP'
 export const GET_CURRENT_SESSION = 'GET_CURRENT_SESSION'
+export const VERIFY_ACCOUNT = 'VERIFY_ACCOUNT'
 
 export const login = data => ({
   types: LOGIN,
@@ -38,5 +39,15 @@ export const getCurrentSession = () => ({
   types: GET_CURRENT_SESSION,
   meta: {
     fetch: fetchRequest.bind(null, '/api/get_current_session'),
+  },
+})
+
+export const verifyAccount = data => ({
+  types: VERIFY_ACCOUNT,
+  meta: {
+    fetch: fetchRequest.bind(null, '/api/verify_account', {
+      body: JSON.stringify(data),
+      method: 'POST',
+    }),
   },
 })

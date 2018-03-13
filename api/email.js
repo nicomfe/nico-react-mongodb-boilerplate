@@ -23,7 +23,10 @@ exports.sendEmail = (user) => {
     to: user.email, // list of receivers
     subject: 'Hello ✔', // Subject line
     text: 'Verify your account', // plain text body
-    html: '<b>Please verify your account clicking on this link</b>', // html body
+    html: `<div>
+      Please verify your account clicking on
+      <a href="http://localhost:3000/verifyAccount?email=${user.email}&token=${user.verifyEmailToken}">this link</a>
+    </div>`, // html body
   }
 
   // send mail with defined transport object
