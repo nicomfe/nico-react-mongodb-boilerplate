@@ -4,6 +4,7 @@ const LocalStrategy = require('passport-local').Strategy
 const localPassport = require('../db/passport/local')
 const User = require('../db/models/user')
 const config = require('./config')
+const emailModule = require('./email')
 
 passport.use(new LocalStrategy({ usernameField: 'email' }, localPassport))
 
@@ -38,7 +39,8 @@ exports.create_user = (req, res, next) => {
           return res.status(500).send({ message: loginErr })
         }
         return req.session.save(() => {
-          return res.status(200).send(JSON.stringify(user))
+          emailModule.sendEmail(user)
+          res.status(200).send(JSON.stringify(user))
         })
       })
     })
