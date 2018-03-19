@@ -1,19 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 
 import * as authActions from '../redux/auth/actions'
 
 class VerifyAccount extends React.Component {
+  constructor() {
+    super()
+    this.state = { verified: false }
+  }
   componentWillMount() {
     const { location, dispatchVerifyAccount } = this.props
     const { token, email } = queryString.parse(location.search)
-    dispatchVerifyAccount({ token, email })
+    dispatchVerifyAccount({ token, email }).then(() => {
+      this.setState({ verified: true })
+    })
   }
 
   render() {
-    return <div>Verifying account...</div>
+    const { verified } = this.state
+    return verified ? <div>Verifying account...</div> : <Redirect to="/login" />
   }
 }
 
