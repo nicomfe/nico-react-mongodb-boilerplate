@@ -33,15 +33,8 @@ exports.create_user = (req, res, next) => {
 
     return user.save((saveErr) => {
       if (saveErr) return next(saveErr)
-      return req.login(user, (loginErr) => {
-        if (loginErr) {
-          return res.status(500).send({ message: loginErr })
-        }
-        return req.session.save(() => {
-          emailModule.sendEmail(user)
-          res.status(200).send(JSON.stringify(user))
-        })
-      })
+      emailModule.sendEmail(user)
+      return res.status(200).send(JSON.stringify(user))
     })
   })
 }

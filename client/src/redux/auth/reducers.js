@@ -12,10 +12,12 @@ export default createReducer(initialState, {
     localStorage.setItem('currentUser', user._id)
     return state.set('currentUser', Immutable.fromJS(action.payload.response))
   },
-  [`${SIGNUP}${SUCCESS_SUFFIX}`]: (state, action) => {
-    const user = action.payload.response
-    localStorage.setItem('currentUser', user._id)
-    return state.set('currentUser', Immutable.fromJS(user))
+  [`${SIGNUP}${SUCCESS_SUFFIX}`]: (state) => {
+    // const user = action.payload.response
+    // localStorage.setItem('currentUser', user._id)
+
+    // email not verified so we dont set current user
+    return state.remove('currentUser')
   },
   [`${SIGNUP}${FAILURE_SUFFIX}`]: (state, action) => {
     alert(action.error.message)
