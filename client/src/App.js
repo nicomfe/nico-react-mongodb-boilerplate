@@ -11,6 +11,7 @@ import * as authActions from './redux/auth/actions'
 import * as passwordActions from './redux/passwords/actions'
 // components
 import NavBarContainer from './containers/NavBarContainer'
+import Footer from './components/Footer'
 
 import './App.css'
 
@@ -78,6 +79,7 @@ class App extends React.Component {
             </button>
           </div>
         )}
+        <Footer />
       </div>
     )
   }
