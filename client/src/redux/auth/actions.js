@@ -1,5 +1,6 @@
 import { fetchRequest } from '../fetchUtil'
 
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const SIGNUP = 'SIGNUP'
@@ -32,6 +33,16 @@ export const logout = () => ({
   types: LOGOUT,
   meta: {
     fetch: fetchRequest.bind(null, '/api/logout', { method: 'POST' }),
+  },
+})
+
+export const updatePassword = data => ({
+  types: UPDATE_PASSWORD,
+  meta: {
+    fetch: fetchRequest.bind(null, '/api/update_password', {
+      body: JSON.stringify(data),
+      method: 'POST',
+    }),
   },
 })
 

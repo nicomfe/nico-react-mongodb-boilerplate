@@ -19,6 +19,25 @@ mongoDbHelper.start(() => {
   console.log('mongodb ready')
 })
 
+exports.update_password = (req, res) => {
+  if (req.body.newPass !== req.body.newPassConfirm) {
+    throw new Error('password and confirm password do not match')
+  }
+
+  return User.findOne({ email: req.body.email }, (findErr, user) => {
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if (err) return res.status(400).send({ message: 'Error trying to verify existing password' })
+      if (isMatch) {
+        return Object.assign(user, { password: req.body.newPass }).save((saveErr) => {
+          if (saveErr) return res.status(400).send({ message: 'Couldnt save new password' })
+          return res.status(200).send(JSON.stringify(user))
+        })
+      }
+      return res.status(400).send({ message: 'Invalid existing password' })
+    })
+  })
+}
+
 exports.create_user = (req, res, next) => {
   const user = new User({
     email: req.body.email,

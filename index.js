@@ -45,7 +45,7 @@ app.use(passport.session())
 app.post('/api/create_user', api.create_user)
 
 app.post('/api/verify_account', api.verify_account)
-
+app.post('/api/update_password', api.update_password)
 app.post('/api/login_with_email_password', (req, res, next) => {
   passport.authenticate('local', (authErr, user, info) => {
     if (authErr) {

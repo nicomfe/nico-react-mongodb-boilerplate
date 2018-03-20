@@ -7,7 +7,7 @@ import App from './App'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import VerifyAccount from './pages/VerifyAccount'
-import ProfileContainer from './containers/ProfileContainer'
+import Profile from './pages/Profile'
 
 const Routes = () => {
   return (
@@ -17,7 +17,7 @@ const Routes = () => {
       <Route path={'/signup'} component={SignUp} />
       <Route path={'/verifyAccount'} component={VerifyAccount} />
       {/* Login required */}
-      <PrivateRoute path={'/profile'} component={ProfileContainer} />
+      <PrivateRoute path={'/profile'} component={Profile} />
 
       <Route path={'/'} component={App} />
     </Switch>
