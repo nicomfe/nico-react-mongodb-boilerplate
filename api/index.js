@@ -57,10 +57,8 @@ const createPassword = (req, res) => {
     if (findErr) return res.status(400).send({ message: 'Error trying to find user' })
     const expireDate = moment(user.resetPasswordExpires)
     if (expireDate.millisecond() < moment().millisecond) {
-      console.log('token expired', expireDate)
       return res.status(400).send({ message: 'token expired' })
     }
-    console.log('Updating user')
     return updateUser(req, res)
   })
 }
