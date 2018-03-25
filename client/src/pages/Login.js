@@ -37,6 +37,7 @@ class Login extends React.Component {
       Password <input type="password" name="password" value={password} onChange={this.handleChange} />
       <button type="submit">Login</button>
       <small>If you dont want to create a user just use nico@nico.com/password</small>
+      <a href="/forgotPassword">Forgot password?</a>
     </form>)
   }
 }
