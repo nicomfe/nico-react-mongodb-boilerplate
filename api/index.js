@@ -1,6 +1,5 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const uuid = require('uuid/v4')
 
 const localPassport = require('../db/passport/local')
 const User = require('../db/models/user')
@@ -42,7 +41,6 @@ exports.create_user = (req, res, next) => {
   const user = new User({
     email: req.body.email,
     password: req.body.password,
-    verifyEmailToken: uuid(),
   })
 
   return User.findOne({ email: req.body.email }, (findErr, existingUser) => {

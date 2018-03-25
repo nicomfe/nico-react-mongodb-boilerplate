@@ -2,7 +2,7 @@
  * Defining a User Model in mongoose
  * Code modified from https://github.com/sahat/hackathon-starter
  */
-
+const uuid = require('uuid/v4')
 const bcrypt = require('bcrypt-nodejs')
 const mongoose = require('mongoose')
 
@@ -38,10 +38,16 @@ function encryptPassword(next) {
   })
 }
 
+function addTokens(next) {
+  const user = this
+  user.verifyEmailToken = uuid()
+  return next()
+}
 /**
  * Password hash middleware.
  */
 UserSchema.pre('save', encryptPassword)
+UserSchema.pre('save', addTokens)
 
 /*
  Defining our own custom document instance method
