@@ -1,30 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import FormHoc from '../../hocs/FormHoc'
+
 class UpdatePasswordForm extends React.Component {
-  constructor() {
-    super()
-    this.state = {}
-  }
-
-  handleChange = (event) => {
-    const { name, value } = event.target
-    this.setState({ [name]: value })
-  }
-
   handleSubmit = (event) => {
     event.preventDefault()
-    const { handleSubmit } = this.props
-    const { password, newPass, newPassConfirm } = this.state
-    handleSubmit({ password, newPass, newPassConfirm })
+    const { handleSubmit, fields } = this.props
+    console.log(fields)
+    handleSubmit({ ...fields })
   }
 
   render() {
+    const { handleChange } = this.props
     const commonProps = {
       type: 'password',
       required: true,
-      onChange: this.handleChange,
+      onChange: handleChange,
     }
+
     return (
       <form onSubmit={this.handleSubmit}>
         Existing password<input name="password" {...commonProps} />
@@ -38,6 +32,8 @@ class UpdatePasswordForm extends React.Component {
 
 UpdatePasswordForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  fields: PropTypes.object.isRequired,
 }
 
-export default UpdatePasswordForm
+export default FormHoc(UpdatePasswordForm)

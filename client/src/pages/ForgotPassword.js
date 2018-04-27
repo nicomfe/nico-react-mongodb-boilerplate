@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import queryString from 'query-string'
 
 import * as authActions from '../redux/auth/actions'
 
@@ -12,31 +11,19 @@ class ForgotPassword extends React.Component {
     this.state = { sent: false }
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target
-    this.setState({ [name]: value })
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault()
+  handleSubmit = (fields) => {
     const { dispatchForgotPassword } = this.props
-    const { email } = this.state
+    const { email } = fields
     dispatchForgotPassword({ email }).then(() => this.setState({ sent: true }))
     alert('We sent you an email with a link to reset your password')
   }
 
   render() {
-    const { email, sent } = this.state
+    const { sent } = this.state
     if (sent) {
       return <Redirect to="/login" />
     }
-    return (<div>
-      Please enter your email
-      <form onSubmit={this.handleSubmit}>
-        Email <input type="email" name="email" value={email} onChange={this.handleChange} />
-        <button type="submit">Submit</button>
-      </form>
-    </div>)
+    return (<ForgotPassword handleSubmit={this.handleSubmit} />)
   }
 }
 

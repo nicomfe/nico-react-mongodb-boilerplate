@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 
+import ResetPasswordForm from '../components/form/ResetPasswordForm'
 import * as authActions from '../redux/auth/actions'
 
 class ResetPassword extends React.Component {
@@ -12,15 +13,9 @@ class ResetPassword extends React.Component {
     this.state = { created: false }
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target
-    this.setState({ [name]: value })
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault()
+  handleSubmit = (fields) => {
     const { dispatchCreatePassword, location } = this.props
-    const { password, confirmPassword } = this.state
+    const { password, confirmPassword } = fields
     const { token, email } = queryString.parse(location.search)
     if (password !== confirmPassword) return alert('passwords dont match')
     return dispatchCreatePassword({ email, verifyEmailToken: token, password, confirmPassword }).then(() => {
@@ -29,18 +24,11 @@ class ResetPassword extends React.Component {
   }
 
   render() {
-    const { password, confirmPassword, created } = this.state
+    const { created } = this.state
     if (created) {
       return <Redirect to="/login" />
     }
-    return (<div>
-      Please enter your new password
-      <form onSubmit={this.handleSubmit}>
-        Password <input type="password" name="password" value={password} onChange={this.handleChange} />
-        Confirm Password <input type="password" name="confirmPassword" value={confirmPassword} onChange={this.handleChange} />
-        <button type="submit">Submit</button>
-      </form>
-    </div>)
+    return (<ResetPasswordForm handleSubmit={this.handleSubmit} />)
   }
 }
 
