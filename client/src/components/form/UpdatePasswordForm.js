@@ -7,7 +7,6 @@ class UpdatePasswordForm extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault()
     const { handleSubmit, fields } = this.props
-    console.log(fields)
     handleSubmit({ ...fields })
   }
 
