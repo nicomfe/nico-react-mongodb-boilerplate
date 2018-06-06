@@ -35,8 +35,8 @@ class App extends React.Component {
   showButton = () => {
     return (
       <Button
-        primary
         variant="raised"
+        color="primary"
         onClick={this.getPasswords}
       >
         Get More
