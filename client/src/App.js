@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { connect } from 'react-redux'
+import Button from 'material-ui/Button'
 
 // selectors
 import * as passwordSelectors from './redux/passwords/selectors'
@@ -33,12 +34,13 @@ class App extends React.Component {
 
   showButton = () => {
     return (
-      <button
-        className="more"
+      <Button
+        primary
+        variant="raised"
         onClick={this.getPasswords}
       >
         Get More
-      </button>
+      </Button>
     )
   }
 
