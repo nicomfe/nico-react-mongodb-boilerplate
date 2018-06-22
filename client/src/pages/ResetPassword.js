@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 
+import MasterPage from '../pages/MasterPage'
 import ResetPasswordForm from '../components/form/ResetPasswordForm'
 import * as authActions from '../redux/auth/actions'
 
@@ -28,7 +29,7 @@ class ResetPassword extends React.Component {
     if (created) {
       return <Redirect to="/login" />
     }
-    return (<ResetPasswordForm handleSubmit={this.handleSubmit} />)
+    return (<MasterPage><ResetPasswordForm handleSubmit={this.handleSubmit} /></MasterPage>)
   }
 }
 

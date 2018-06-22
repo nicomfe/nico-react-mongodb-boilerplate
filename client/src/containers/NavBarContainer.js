@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import NavBar from '../components/NavBar'
+import NavBar from '../components/menu/NavBar'
 import * as authSelectors from '../redux/auth/selectors'
 import * as authActions from '../redux/auth/actions'
 

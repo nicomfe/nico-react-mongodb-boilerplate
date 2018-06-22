@@ -1,3 +1,7 @@
 .menu a {
   margin-left: 15px;
 }
+
+.title {
+  flex: 1;
+}

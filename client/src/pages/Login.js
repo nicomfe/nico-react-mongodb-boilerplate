@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import ImmutablerPropTypes from 'react-immutable-proptypes'
 
+import MasterPage from '../pages/MasterPage'
 import LoginForm from '../components/form/LoginForm'
 import * as authSelectors from '../redux/auth/selectors'
 import * as authActions from '../redux/auth/actions'
@@ -20,7 +21,7 @@ class Login extends React.Component {
     if (currentUser) {
       return <Redirect to="/" />
     }
-    return (<LoginForm handleSubmit={this.handleSubmit} />)
+    return (<MasterPage><LoginForm handleSubmit={this.handleSubmit} /></MasterPage>)
   }
 }
 

@@ -4,19 +4,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { connect } from 'react-redux'
 
 // selectors
-import * as passwordSelectors from './redux/passwords/selectors'
-import * as authSelectors from './redux/auth/selectors'
+import * as passwordSelectors from '../redux/passwords/selectors'
+import * as authSelectors from '../redux/auth/selectors'
 // actions
-import * as authActions from './redux/auth/actions'
-import * as passwordActions from './redux/passwords/actions'
+import * as authActions from '../redux/auth/actions'
+import * as passwordActions from '../redux/passwords/actions'
 // components
-import NavBarContainer from './containers/NavBarContainer'
-import Footer from './components/Footer'
-import Button from './components/button'
+import MasterPage from './MasterPage'
+import Button from '../components/button'
 
-import './App.css'
-
-class App extends React.Component {
+class HomePage extends React.Component {
   componentWillMount() {
     const { dispatchGetCurrentSession } = this.props
     dispatchGetCurrentSession()
@@ -48,8 +45,7 @@ class App extends React.Component {
     const { lastPasswords, currentUser } = this.props
 
     return (
-      <div className="App">
-        <NavBarContainer />
+      <MasterPage>
         {/* Render the passwords if we have them */}
         {lastPasswords.count() ? (
           <div>
@@ -81,13 +77,12 @@ class App extends React.Component {
             </button>
           </div>
         )}
-        <Footer />
-      </div>
+      </MasterPage>
     )
   }
 }
 
-App.propTypes = {
+HomePage.propTypes = {
   dispatchGeneratePassword: PropTypes.func.isRequired,
   dispatchGetCurrentSession: PropTypes.func.isRequired,
   lastPasswords: ImmutablePropTypes.list,
@@ -104,4 +99,4 @@ const mapDispatchToProps = dispatch => ({
   dispatchGetCurrentSession: () => dispatch(authActions.getCurrentSession()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
