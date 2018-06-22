@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { connect } from 'react-redux'
-import Button from 'material-ui/Button'
 
 // selectors
 import * as passwordSelectors from './redux/passwords/selectors'
@@ -13,6 +12,7 @@ import * as passwordActions from './redux/passwords/actions'
 // components
 import NavBarContainer from './containers/NavBarContainer'
 import Footer from './components/Footer'
+import Button from './components/button'
 
 import './App.css'
 
