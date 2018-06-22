@@ -64,7 +64,7 @@ class HomePage extends React.Component {
                 </li>
               )}
             </ul>
-            {currentUser ? this.showButton() : <Typography variant="display1" gutterBottom>Login to generate more passwords</Typography>}
+            {currentUser ? this.showButton() : <Typography variant="caption" gutterBottom>Login to generate more passwords</Typography>}
           </div>
         ) : (
           // Render a helpful message otherwise
