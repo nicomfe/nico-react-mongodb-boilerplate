@@ -1,5 +1,7 @@
 import { createMuiTheme } from 'material-ui/styles'
 
+// find full object data here: https://material-ui.com/customization/default-theme/
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -14,6 +16,11 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
     // error: will use the default color
+  },
+  typography: {
+    display4: {
+      fontSize: '4rem',
+    },
   },
 })
 
