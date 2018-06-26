@@ -14,7 +14,7 @@ const ForgotPassword = ({ fields, handleSubmit, handleChange }) => {
   }
 
   return (<form onSubmit={onSubmit} className={styles.container}>
-    <Typography variant="body2" gutterBottom>
+    <Typography variant="body2">
       Please enter your email
     </Typography>
     {renderEmailField({ onChange: handleChange })}

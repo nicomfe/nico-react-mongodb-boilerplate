@@ -21,7 +21,7 @@ mongoDbHelper.start(() => {
 
 const updatePassword = (req, res) => {
   if (req.body.newPass !== req.body.newPassConfirm) {
-    throw new Error('password and confirm password do not match')
+    return res.status(400).send({ message: 'password and confirm password do not match' })
   }
 
   return User.findOne({ email: req.body.email }, (findErr, user) => {

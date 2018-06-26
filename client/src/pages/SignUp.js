@@ -10,18 +10,27 @@ import * as authSelectors from '../redux/auth/selectors'
 import * as authActions from '../redux/auth/actions'
 
 class Login extends React.Component {
+  constructor() {
+    super()
+    this.state = { userCreated: false }
+  }
   handleSubmit = (fields) => {
     const { dispatchSignup } = this.props
     const { email, password } = fields
     dispatchSignup({ email, password }).then(() => {
       alert('User created')
+      this.setState({ userCreated: true })
     })
   }
 
   render() {
     const { currentUser } = this.props
+    const { userCreated } = this.state
     if (currentUser) {
       return <Redirect to="/" />
+    }
+    if (userCreated) {
+      return <Redirect to="/confirmEmail" />
     }
     return (<MasterPage><SignupForm handleSubmit={this.handleSubmit} /></MasterPage>)
   }

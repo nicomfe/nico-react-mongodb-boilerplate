@@ -18,7 +18,10 @@ class ResetPassword extends React.Component {
     const { dispatchCreatePassword, location } = this.props
     const { password, confirmPassword } = fields
     const { token, email } = queryString.parse(location.search)
-    if (password !== confirmPassword) return alert('passwords dont match')
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.')
+      return Promise.reject('passwords dont match')
+    }
     return dispatchCreatePassword({ email, verifyEmailToken: token, password, confirmPassword }).then(() => {
       this.setState({ created: true })
     })

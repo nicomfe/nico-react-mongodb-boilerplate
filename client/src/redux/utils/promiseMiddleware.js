@@ -53,6 +53,7 @@ const fetch = store => next => (action) => {
       },
       payload,
     })
+    return { error }
   })
 }
 

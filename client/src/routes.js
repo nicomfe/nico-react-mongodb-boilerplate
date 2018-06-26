@@ -10,6 +10,7 @@ import VerifyAccount from './pages/VerifyAccount'
 import Profile from './pages/Profile'
 import ForgotPassword from './pages/ForgotPassword'
 import Home from './pages/Home'
+import ConfirmEmailMessage from './pages/ConfirmEmailMessage'
 
 const Routes = () => {
   return (
@@ -20,6 +21,7 @@ const Routes = () => {
       <Route path={'/verifyAccount'} component={VerifyAccount} />
       <Route path={'/forgotPassword'} component={ForgotPassword} />
       <Route path={'/resetPassword'} component={ResetPassword} />
+      <Route path={'/confirmEmail'} component={ConfirmEmailMessage} />
       {/* Login required */}
       <PrivateRoute path={'/profile'} component={Profile} />
 
