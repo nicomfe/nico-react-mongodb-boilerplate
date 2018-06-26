@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import MasterPage from '../pages/MasterPage'
+import ForgotPasswordForm from '../components/form/ForgotPassword'
+import MasterPage from './MasterPage'
 import * as authActions from '../redux/auth/actions'
 
 class ForgotPassword extends React.Component {
@@ -24,7 +25,7 @@ class ForgotPassword extends React.Component {
     if (sent) {
       return <Redirect to="/login" />
     }
-    return (<MasterPage><ForgotPassword handleSubmit={this.handleSubmit} /></MasterPage>)
+    return (<MasterPage><ForgotPasswordForm handleSubmit={this.handleSubmit} /></MasterPage>)
   }
 }
 
