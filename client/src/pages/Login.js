@@ -21,7 +21,9 @@ class Login extends React.Component {
     if (currentUser) {
       return <Redirect to="/" />
     }
-    return (<MasterPage><LoginForm handleSubmit={this.handleSubmit} /></MasterPage>)
+    return (<MasterPage>
+      <LoginForm handleSubmit={this.handleSubmit} />
+    </MasterPage>)
   }
 }
 
