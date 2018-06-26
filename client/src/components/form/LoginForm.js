@@ -1,6 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 
+import Button from '../button'
 import FormHoc from '../../hocs/FormHoc'
 import styles from './form.module.css'
 
@@ -10,12 +13,17 @@ const LoginForm = ({ fields, handleSubmit, handleChange }) => {
     handleSubmit(fields)
   }
 
+  const renderTextField = (props) => {
+    return (<TextField {...props} margin="normal" />)
+  }
+
   return (<form onSubmit={onSubmit} className={styles.container}>
-    Email <input type="text" name="email" onChange={handleChange} />
-    Password <input type="password" name="password" onChange={handleChange} />
-    <button type="submit">Login</button>
-    <small>If you dont want to create a user just use nico@nico.com/password</small>
-    <a href="/forgotPassword">Forgot password?</a>
+    {renderTextField({ label: 'Email', type: 'text', name: 'email', onChange: handleChange }) }
+    {renderTextField({ label: 'Password', type: 'password', name: 'password', onChange: handleChange }) }
+    <Button type="submit">Login</Button>
+    <Typography variant="body2" gutterBottom>
+      <p><a href="/forgotPassword">Forgot password?</a></p>
+    </Typography>
   </form>)
 }
 
