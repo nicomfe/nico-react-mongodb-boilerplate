@@ -31,16 +31,6 @@ class NavBar extends React.Component {
     const { currentUser, dispatchLogout } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
-    // {currentUser
-    //   ? (<div>
-    //     {`Logged with ${currentUser.get('email')}`} <button onClick={dispatchLogout}>Logout</button>
-    //     <a href="/profile">Profile</a>
-    //   </div>)
-    //   : (<div>
-    //     <a href="/login">Login</a>
-    //     <a href="/signup">Signup</a>
-    //   </div>)
-    // }
     return (<AppBar position="static" color="primary" className={styles.menu}>
       <Toolbar>
         <IconButton className={styles.menuButton} color="inherit" aria-label="Menu">
@@ -74,7 +64,7 @@ class NavBar extends React.Component {
               onClose={this.handleClose}
             >
               <Link to="/profile"><MenuItem onClick={this.handleClose}>Profile</MenuItem></Link>
-              <MenuItem onClick={dispatchLogout}>Logout</MenuItem>
+              <Link to="/logout"><MenuItem onClick={dispatchLogout}>Logout</MenuItem></Link>
             </Menu>
           </div>
         ) : (

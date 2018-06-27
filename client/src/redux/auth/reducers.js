@@ -6,6 +6,20 @@ import { SUCCESS_SUFFIX, FAILURE_SUFFIX } from '../utils/promiseMiddleware'
 
 const initialState = Immutable.fromJS({})
 
+const updateReducerReducer = (state, action) => {
+  const user = action.payload.response
+  if (user) {
+    localStorage.setItem('currentUser', user._id)
+    let _newState = state
+    _newState = state.set('currentUser', Immutable.fromJS(user))
+    if (_newState.has('all') && _newState.hasIn(['all', user._id])) {
+      _newState = _newState.setIn(['all', user._id], Immutable.fromJS(user))
+    }
+    return _newState
+  }
+  return state
+}
+
 export default createReducer(initialState, {
   [`${LOGIN}${SUCCESS_SUFFIX}`]: (state, action) => {
     const user = action.payload.response
@@ -23,9 +37,7 @@ export default createReducer(initialState, {
     alert(action.error.message)
     return state.remove('currentUser')
   },
-  [`${GET_CURRENT_SESSION}${SUCCESS_SUFFIX}`]: (state, action) => {
-    return state.set('currentUser', Immutable.fromJS(action.payload.response))
-  },
+  [`${GET_CURRENT_SESSION}${SUCCESS_SUFFIX}`]: updateReducerReducer,
   [`${LOGIN}${FAILURE_SUFFIX}`]: (state, action) => {
     localStorage.removeItem('currentUser')
     alert(action.error.message)

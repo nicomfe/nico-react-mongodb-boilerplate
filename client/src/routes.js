@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import ForgotPassword from './pages/ForgotPassword'
 import Home from './pages/Home'
 import ConfirmEmailMessage from './pages/ConfirmEmailMessage'
+import Logout from './pages/Logout'
 
 const Routes = () => {
   return (
@@ -22,6 +23,7 @@ const Routes = () => {
       <Route path={'/forgotPassword'} component={ForgotPassword} />
       <Route path={'/resetPassword'} component={ResetPassword} />
       <Route path={'/confirmEmail'} component={ConfirmEmailMessage} />
+      <Route path={'/logout'} component={Logout} />
       {/* Login required */}
       <PrivateRoute path={'/profile'} component={Profile} />
 
