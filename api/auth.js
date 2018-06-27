@@ -25,6 +25,14 @@ function updateUser(req, res, next) {
   })
 }
 
+/**
+* Middleware for all the routes in this file
+**/
+router.use((req, res, next) => {
+  // this is just an example delete if not needed
+  next()
+})
+
 router.patch('/update_password', (req, res, next) => {
   if (req.body.newPass !== req.body.newPassConfirm) {
     return next('password and confirm password do not match')
