@@ -117,13 +117,11 @@ const verifyAccount = (req, res, next) => {
   return User.findOne({ email: req.body.email }, (findErr, existingUser) => {
     if (existingUser) {
       if (existingUser.emailVerified) {
-        return res.status(200).send({ message: 'Account already verified' })
+        return next('Account already verified')
       }
       if (req.body.token === existingUser.verifyEmailToken) {
         return Object.assign(existingUser, { emailVerified: true }).save((err, updateData) => {
-          if (err) {
-            return next(err)
-          }
+          if (err) { return next(err) }
           return res.status(200).send(updateData)
         })
       }
