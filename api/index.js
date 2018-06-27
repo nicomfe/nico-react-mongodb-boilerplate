@@ -1,4 +1,5 @@
 const express = require('express')
+const log = require('winston')
 
 const config = require('./utils/config')
 const MongoDbHelper = require('./utils/MongoDbHelper')
@@ -7,7 +8,7 @@ const mongoDbHelper = new MongoDbHelper(config.MONGO_URL)
 
 // start connection
 mongoDbHelper.start(() => {
-  console.log('mongodb ready')
+  log.info('Mongodb ready')
 })
 
 const router = express.Router()

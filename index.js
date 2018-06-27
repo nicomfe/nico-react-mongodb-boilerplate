@@ -3,9 +3,14 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
+const log = require('winston')
+
 
 const dbSession = require('./db/session')
 const connectDb = require('./db/connect')
+const config = require('./api/utils/config')
+
+log.level = config.LOG_LEVEL
 
 const app = express()
 
@@ -55,10 +60,11 @@ app.get('*', (req, res) => {
 // ERROR HANDLER
 // DO NOT DELETE THE NEXT ITS THE ONLY WAY TO TELL EXPRESS THIS IS THE ERROR HANDLER
 app.use((err, req, res, next) => {
+  log.debug(err && err.toString())
   res.status(500).send({ message: err && err.toString() })
 })
 
 const port = process.env.PORT || 5000
 app.listen(port)
 
-console.log(`Password generator listening on ${port}`)
+log.info(`App listening on ${port}`)

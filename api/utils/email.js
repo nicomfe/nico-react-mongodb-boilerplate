@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+const log = require('winston')
 
 const config = require('./config')
 
@@ -34,7 +35,7 @@ exports.sendEmail = (user, next) => {
     if (error) {
       return next(`Error sending email. Details: ${error}`)
     }
-    console.log('Message sent to ', user.email, 'Message id', info.messageId)
+    log.info('Message sent to ', user.email, 'Message id', info.messageId)
     return info
   })
 }
@@ -57,7 +58,7 @@ exports.sendRestPasswordLinkEmail = (_user, next) => {
     if (error) {
       return next(`Error sending email. Details: ${error}`)
     }
-    console.log('Message sent to ', _user.email, 'Message id', info.messageId)
+    log.info('Message sent to ', _user.email, 'Message id', info.messageId)
     return info
   })
 }
