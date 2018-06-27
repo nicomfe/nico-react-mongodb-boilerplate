@@ -124,4 +124,20 @@ router.patch('/verify_account', (req, res, next) => {
   })
 })
 
+router.post('/login_with_email_password', (req, res, next) => {
+  passport.authenticate('local', (authErr, user, info) => {
+    if (authErr) {
+      res.status(500).send(authErr)
+    } else if (info) {
+      res.status(401).send(info)
+    } else {
+      req.logIn(user, (err) => {
+        if (err) return next(err)
+        if (!user.emailVerified) return next('Email not verified yet.')
+        return res.status(200).send(JSON.stringify(user))
+      })
+    }
+  })(req, res, next)
+})
+
 module.exports = router

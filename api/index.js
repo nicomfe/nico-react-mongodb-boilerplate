@@ -13,6 +13,7 @@ mongoDbHelper.start(() => {
 const router = express.Router()
 
 router.use('/auth', require('./auth'))
+router.use('/passwords', require('./passwords'))
 // add all other routers here
 
 module.exports = router

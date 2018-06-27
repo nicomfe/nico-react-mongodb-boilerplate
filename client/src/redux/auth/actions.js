@@ -13,7 +13,7 @@ export const login = data => ({
   types: LOGIN,
   payload: { request: data },
   meta: {
-    fetch: fetchRequest.bind(null, '/api/login_with_email_password', {
+    fetch: fetchRequest.bind(null, '/api/auth/login_with_email_password', {
       body: JSON.stringify(data),
       method: 'POST',
     }),
