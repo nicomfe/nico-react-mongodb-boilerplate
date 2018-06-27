@@ -1,0 +1,5 @@
+{"level":"info","message":"App listening on 5000"}
+{"level":"info","message":"Mongodb ready"}
+{"level":"info","message":"App listening on 5000"}
+{"level":"info","message":"===>  Succeeded in connecting to mongodb://localhost:27017/example_db"}
+{"level":"info","message":"Mongodb ready"}

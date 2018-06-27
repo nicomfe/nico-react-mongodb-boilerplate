@@ -1,11 +1,12 @@
 const express = require('express')
 const generatePassword = require('password-generator')
-const log = require('winston')
+
+const logger = require('./utils/logger')
 
 const router = express.Router()
 
 router.get('/generate', (req, res) => {
-  log.debug('Generating new passwords')
+  logger.debug('Generating new passwords')
   const count = 5
 
   // Generate some passwords
