@@ -42,12 +42,8 @@ passport.deserializeUser((user, done) => {
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.post('/api/create_user', api.create_user)
-app.post('/api/create_password', api.create_password)
-app.post('/api/forgot_password', api.forgot_password)
+app.use('/api', require('./api'))
 
-app.post('/api/verify_account', api.verify_account)
-app.patch('/api/update_password', api.update_password)
 app.post('/api/login_with_email_password', (req, res, next) => {
   passport.authenticate('local', (authErr, user, info) => {
     if (authErr) {
@@ -63,9 +59,6 @@ app.post('/api/login_with_email_password', (req, res, next) => {
     }
   })(req, res, next)
 })
-
-app.post('/api/logout', api.logout)
-app.get('/api/get_current_session', api.get_current_session)
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'public')))

@@ -24,7 +24,7 @@ export const signup = data => ({
   types: SIGNUP,
   payload: { request: data },
   meta: {
-    fetch: fetchRequest.bind(null, '/api/create_user', {
+    fetch: fetchRequest.bind(null, '/api/auth/create_user', {
       body: JSON.stringify(data),
       method: 'POST',
     }),
@@ -35,7 +35,7 @@ export const forgotPassword = data => ({
   types: FORGOT_PASSWORD,
   payload: { request: data },
   meta: {
-    fetch: fetchRequest.bind(null, '/api/forgot_password', {
+    fetch: fetchRequest.bind(null, '/api/auth/forgot_password', {
       body: JSON.stringify(data),
       method: 'POST',
     }),
@@ -46,14 +46,14 @@ export const forgotPassword = data => ({
 export const logout = () => ({
   types: LOGOUT,
   meta: {
-    fetch: fetchRequest.bind(null, '/api/logout', { method: 'POST' }),
+    fetch: fetchRequest.bind(null, '/api/auth/logout', { method: 'POST' }),
   },
 })
 
 export const updatePassword = data => ({
   types: UPDATE_PASSWORD,
   meta: {
-    fetch: fetchRequest.bind(null, '/api/update_password', {
+    fetch: fetchRequest.bind(null, '/api/auth/update_password', {
       body: JSON.stringify(data),
       method: 'PATCH',
     }),
@@ -63,7 +63,7 @@ export const updatePassword = data => ({
 export const createPassword = data => ({
   types: CREATE_PASSWORD,
   meta: {
-    fetch: fetchRequest.bind(null, '/api/create_password', {
+    fetch: fetchRequest.bind(null, '/api/auth/create_password', {
       body: JSON.stringify(data),
       method: 'POST',
     }),
@@ -73,16 +73,16 @@ export const createPassword = data => ({
 export const getCurrentSession = () => ({
   types: GET_CURRENT_SESSION,
   meta: {
-    fetch: fetchRequest.bind(null, '/api/get_current_session'),
+    fetch: fetchRequest.bind(null, '/api/auth/get_current_session'),
   },
 })
 
 export const verifyAccount = data => ({
   types: VERIFY_ACCOUNT,
   meta: {
-    fetch: fetchRequest.bind(null, '/api/verify_account', {
+    fetch: fetchRequest.bind(null, '/api/auth/verify_account', {
       body: JSON.stringify(data),
-      method: 'POST',
+      method: 'PATCH',
     }),
   },
 })
