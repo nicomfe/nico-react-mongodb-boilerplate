@@ -1,5 +1,5 @@
 .menu {
-  display: inline-table;
+  display: inline-table !important;
 }
 
 .menu a {
