@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const config = require('../api/config')
+const config = require('../api/utils/config')
 const loadModels = require('./models')
 
 module.exports = function connectDb() {

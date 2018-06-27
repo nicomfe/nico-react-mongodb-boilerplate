@@ -1,7 +1,7 @@
 const session = require('express-session')
 const connectMongo = require('connect-mongo')
 
-const config = require('../api/config')
+const config = require('../api/utils/config')
 
 const MongoStore = connectMongo(session)
 

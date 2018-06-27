@@ -6,7 +6,7 @@ const uuid = require('uuid/v4')
 
 const localPassport = require('../db/passport/local')
 const User = require('../db/models/user')
-const emailModule = require('./email')
+const emailModule = require('./utils/email')
 
 const router = express.Router()
 

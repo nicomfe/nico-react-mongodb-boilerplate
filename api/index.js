@@ -1,7 +1,7 @@
 const express = require('express')
 
-const config = require('./config')
-const MongoDbHelper = require('./MongoDbHelper')
+const config = require('./utils/config')
+const MongoDbHelper = require('./utils/MongoDbHelper')
 
 const mongoDbHelper = new MongoDbHelper(config.MONGO_URL)
 
