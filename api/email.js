@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-exports.sendEmail = (user) => {
+exports.sendEmail = (user, next) => {
   // setup email data with unicode symbols
   const mailOptions = {
     from: '"Smart creations 👻" <hi@smartcreations.co.nz>', // sender address
@@ -32,13 +32,14 @@ exports.sendEmail = (user) => {
   // send mail with defined transport object
   return transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log('Error sending email', error)
+      return next(`Error sending email. Details: ${error}`)
     }
     console.log('Message sent to ', user.email, 'Message id', info.messageId)
+    return info
   })
 }
 
-exports.sendRestPasswordLinkEmail = (_user) => {
+exports.sendRestPasswordLinkEmail = (_user, next) => {
   // setup email data with unicode symbols
   const mailOptions = {
     from: '"Smart creations 👻" <hi@smartcreations.co.nz>', // sender address
@@ -54,8 +55,9 @@ exports.sendRestPasswordLinkEmail = (_user) => {
   // send mail with defined transport object
   return transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log('Error sending email', error)
+      return next(`Error sending email. Details: ${error}`)
     }
     console.log('Message sent to ', _user.email, 'Message id', info.messageId)
+    return info
   })
 }

@@ -90,6 +90,12 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(`${__dirname}/client/build/index.html`))
 })
 
+// ERROR HANDLER
+// DO NOT DELETE THE NEXT ITS THE ONLY WAY TO TELL EXPRESS THIS IS THE ERROR HANDLER
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err && err.toString() })
+})
+
 const port = process.env.PORT || 5000
 app.listen(port)
 
