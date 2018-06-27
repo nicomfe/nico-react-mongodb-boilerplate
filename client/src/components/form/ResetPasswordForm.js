@@ -1,22 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
+import Button from '../button'
 
+import styles from './form.module.css'
 import FormHoc from '../../hocs/FormHoc'
+import { renderPasswordField } from './utils'
 
 const ResetPasswordForm = ({ fields, handleSubmit, handleChange }) => {
   const onSubmit = (event) => {
     event.preventDefault()
-    handleSubmit(fields)
+    handleSubmit(fields).then(() => {
+      alert('Password updated')
+    })
   }
 
-  return (<div>
-    Please enter your new password
-    <form onSubmit={onSubmit}>
-      Password <input type="password" name="password" onChange={handleChange} />
-      Confirm Password <input type="password" name="confirmPassword" onChange={handleChange} />
-      <button type="submit">Submit</button>
-    </form>
-  </div>)
+  return (<form onSubmit={onSubmit} className={styles.container}>
+    <Typography variant="body2">
+      Please enter your new password
+    </Typography>
+    {renderPasswordField({ onChange: handleChange })}
+    {renderPasswordField({ label: 'Confirm Password', name: 'confirmPassword', onChange: handleChange })}
+    <Button type="submit">Submit</Button>
+  </form>)
 }
 
 ResetPasswordForm.propTypes = {

@@ -3,13 +3,15 @@ import { Route, Switch } from 'react-router-dom'
 
 // components
 import PrivateRoute from './components/routing/PrivateRoute'
-import App from './App'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import ResetPassword from './pages/ResetPassword'
 import VerifyAccount from './pages/VerifyAccount'
 import Profile from './pages/Profile'
 import ForgotPassword from './pages/ForgotPassword'
+import Home from './pages/Home'
+import ConfirmEmailMessage from './pages/ConfirmEmailMessage'
+import Logout from './pages/Logout'
 
 const Routes = () => {
   return (
@@ -20,10 +22,12 @@ const Routes = () => {
       <Route path={'/verifyAccount'} component={VerifyAccount} />
       <Route path={'/forgotPassword'} component={ForgotPassword} />
       <Route path={'/resetPassword'} component={ResetPassword} />
+      <Route path={'/confirmEmail'} component={ConfirmEmailMessage} />
+      <Route path={'/logout'} component={Logout} />
       {/* Login required */}
       <PrivateRoute path={'/profile'} component={Profile} />
 
-      <Route path={'/'} component={App} />
+      <Route path={'/'} component={Home} />
     </Switch>
   )
 }

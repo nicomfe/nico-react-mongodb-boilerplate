@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import Button from '../button'
 import FormHoc from '../../hocs/FormHoc'
 import styles from './form.module.css'
+import { renderEmailField, renderPasswordField } from './utils'
 
 const SignupForm = ({ fields, handleSubmit, handleChange }) => {
   const onSubmit = (event) => {
@@ -11,9 +13,9 @@ const SignupForm = ({ fields, handleSubmit, handleChange }) => {
   }
 
   return (<form onSubmit={onSubmit} className={styles.container}>
-    Email <input type="text" name="email" onChange={handleChange} />
-    Password <input type="password" name="password" onChange={handleChange} />
-    <button type="submit">Signup</button>
+    {renderEmailField({ onChange: handleChange }) }
+    {renderPasswordField({ onChange: handleChange })}
+    <Button type="submit">Signup</Button>
   </form>)
 }
 

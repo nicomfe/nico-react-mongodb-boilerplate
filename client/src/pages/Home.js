@@ -2,21 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { connect } from 'react-redux'
-import Button from 'material-ui/Button'
+import Typography from '@material-ui/core/Typography'
 
 // selectors
-import * as passwordSelectors from './redux/passwords/selectors'
-import * as authSelectors from './redux/auth/selectors'
+import * as passwordSelectors from '../redux/passwords/selectors'
+import * as authSelectors from '../redux/auth/selectors'
 // actions
-import * as authActions from './redux/auth/actions'
-import * as passwordActions from './redux/passwords/actions'
+import * as authActions from '../redux/auth/actions'
+import * as passwordActions from '../redux/passwords/actions'
 // components
-import NavBarContainer from './containers/NavBarContainer'
-import Footer from './components/Footer'
+import MasterPage from './MasterPage'
+import Button from '../components/button'
 
-import './App.css'
-
-class App extends React.Component {
+class HomePage extends React.Component {
   componentWillMount() {
     const { dispatchGetCurrentSession } = this.props
     dispatchGetCurrentSession()
@@ -48,12 +46,11 @@ class App extends React.Component {
     const { lastPasswords, currentUser } = this.props
 
     return (
-      <div className="App">
-        <NavBarContainer />
+      <MasterPage>
         {/* Render the passwords if we have them */}
         {lastPasswords.count() ? (
           <div>
-            <h1>5 Passwords.</h1>
+            <Typography variant="display4" gutterBottom>Passwords</Typography>
             <ul className="passwords">
               {/*
                 Generally it's bad to use "index" as a key.
@@ -63,31 +60,30 @@ class App extends React.Component {
               */}
               {lastPasswords.map((password, index) =>
                 <li key={index}>
-                  {password}
+                  <Typography variant="body1" gutterBottom>{password}</Typography>
                 </li>
               )}
             </ul>
-            {currentUser ? this.showButton() : <div>Login to generate more passwords</div>}
+            {currentUser ? this.showButton() : <Typography variant="caption" gutterBottom>Login to generate more passwords</Typography>}
           </div>
         ) : (
           // Render a helpful message otherwise
           <div>
-            <h1>No passwords :(</h1>
-            <button
+            <Typography variant="display4" gutterBottom>No passwords :(</Typography>
+            <Button
               className="more"
               onClick={this.getPasswords}
             >
               Try Again?
-            </button>
+            </Button>
           </div>
         )}
-        <Footer />
-      </div>
+      </MasterPage>
     )
   }
 }
 
-App.propTypes = {
+HomePage.propTypes = {
   dispatchGeneratePassword: PropTypes.func.isRequired,
   dispatchGetCurrentSession: PropTypes.func.isRequired,
   lastPasswords: ImmutablePropTypes.list,
@@ -104,4 +100,4 @@ const mapDispatchToProps = dispatch => ({
   dispatchGetCurrentSession: () => dispatch(authActions.getCurrentSession()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage)

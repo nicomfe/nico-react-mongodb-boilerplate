@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
 
+import Button from '../button'
+import { renderEmailField } from './utils'
 import FormHoc from '../../hocs/FormHoc'
+import styles from './form.module.css'
 
 const ForgotPassword = ({ fields, handleSubmit, handleChange }) => {
   const onSubmit = (event) => {
@@ -9,13 +13,13 @@ const ForgotPassword = ({ fields, handleSubmit, handleChange }) => {
     handleSubmit(fields)
   }
 
-  return (<div>
-    Please enter your email
-    <form onSubmit={onSubmit}>
-      Email <input type="email" name="email" onChange={handleChange} />
-      <button type="submit">Submit</button>
-    </form>
-  </div>)
+  return (<form onSubmit={onSubmit} className={styles.container}>
+    <Typography variant="body2">
+      Please enter your email
+    </Typography>
+    {renderEmailField({ onChange: handleChange })}
+    <Button type="submit">Submit</Button>
+  </form>)
 }
 
 ForgotPassword.propTypes = {

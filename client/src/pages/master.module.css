@@ -1,0 +1,4 @@
+.content {
+  height: calc(100vh - 114px); /* the whole screen minus the footer height (50px) and header height (64px) */
+  padding: 1rem;
+}

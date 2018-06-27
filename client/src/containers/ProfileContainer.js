@@ -26,7 +26,7 @@ class ProfileContainer extends React.Component {
 
   updatePassword = (data) => {
     const { currentUser, dispatchUpdatePassword } = this.props
-    dispatchUpdatePassword({ email: currentUser.get('email'), ...data })
+    return dispatchUpdatePassword({ email: currentUser.get('email'), ...data })
   }
 
   render() {
@@ -37,7 +37,9 @@ class ProfileContainer extends React.Component {
     return (<div>
       This is the profile page of {currentUser.get('email')}
       <button onClick={this.toggleUpdatePasswordForm}>Update password</button>
-      {showPasswordForm && <UpdatePasswordForm handleSubmit={this.updatePassword} />}
+      {showPasswordForm
+        && <UpdatePasswordForm toggleUpdatePasswordForm={this.toggleUpdatePasswordForm} handleSubmit={this.updatePassword} />
+      }
     </div>)
   }
 }
