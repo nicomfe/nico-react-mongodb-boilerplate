@@ -2,9 +2,7 @@ const { createLogger, format, transports } = require('winston')
 
 const config = require('./config')
 
-const myFormat = format.printf((info) => {
-  return `${info.timestamp} ${info.level}: ${info.message}`
-})
+const myFormat = format.printf(info => `${info.level === 'error' ? info.timestamp : ''} ${info.level}: ${info.message}`)
 
 const logger = createLogger({
   level: config.LOG_LEVEL,
