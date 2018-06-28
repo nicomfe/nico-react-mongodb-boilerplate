@@ -13,7 +13,7 @@ class ResetPasswordForm extends React.Component {
     event.preventDefault()
     const { handleSubmit, fields, setNotification } = this.props
     handleSubmit(fields).then(() => {
-      alert('Password updated')
+      setNotification('Password updated', 'info')
     }, (errorMessage) => {
       setNotification(errorMessage, 'error')
     })

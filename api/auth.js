@@ -62,7 +62,7 @@ router.post('/create_password', (req, res, next) => {
     if (expireDate.millisecond() < moment().millisecond) {
       return next('token expired')
     }
-    return updateUser(req, res)
+    return updateUser(req, res, next)
   })
 })
 

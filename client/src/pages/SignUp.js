@@ -18,7 +18,6 @@ class Login extends React.Component {
     const { dispatchSignup } = this.props
     const { email, password } = fields
     return dispatchSignup({ email, password }).then(() => {
-      alert('User created')
       this.setState({ userCreated: true })
     })
   }

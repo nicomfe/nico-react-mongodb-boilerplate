@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 
-import NotificationText from '../components/notification/NotificationText'
 import MasterPage from '../pages/MasterPage'
 import ResetPasswordForm from '../components/form/ResetPasswordForm'
 import * as authActions from '../redux/auth/actions'
@@ -24,7 +23,10 @@ class ResetPassword extends React.Component {
       return Promise.reject(errorMessage)
     }
     return dispatchCreatePassword({ email, verifyEmailToken: token, password, confirmPassword }).then(() => {
-      this.setState({ created: true })
+      setTimeout(() => {
+        // this timeout is for redirecting to login
+        this.setState({ created: true })
+      }, 2000)
     })
   }
 
