@@ -13,7 +13,7 @@ const SignupForm = ({ fields, handleSubmit, handleChange, getNotification, setNo
     handleSubmit(fields).then((data) => {
       if (data.error) {
         const { message } = data.error
-        setNotification(message || 'Unkown error when trying to signup')
+        setNotification(message || 'Unkown error when trying to signup', 'error')
       }
     })
   }
