@@ -4,6 +4,7 @@ const moment = require('moment')
 const express = require('express')
 const uuid = require('uuid/v4')
 
+const logger = require('./utils/logger')
 const localPassport = require('../db/passport/local')
 const User = require('../db/models/user')
 const emailModule = require('./utils/email')
@@ -47,6 +48,7 @@ router.patch('/update_password', (req, res, next) => {
           return res.status(200).send(JSON.stringify(user))
         })
       }
+      logger.error('Invalid existing password entered')
       return next('Invalid existing password')
     })
   })
@@ -60,7 +62,7 @@ router.post('/create_password', (req, res, next) => {
     if (expireDate.millisecond() < moment().millisecond) {
       return next('token expired')
     }
-    return updateUser(req, res)
+    return updateUser(req, res, next)
   })
 })
 
@@ -95,7 +97,7 @@ router.post('/create_user', (req, res, next) => {
 
     return user.save((saveErr) => {
       if (saveErr) return next(saveErr)
-      emailModule.sendEmail(user)
+      emailModule.sendEmail(user, next)
       return res.status(200).send(JSON.stringify(user))
     })
   })

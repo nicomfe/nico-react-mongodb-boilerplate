@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer')
 
+const logger = require('./logger')
+
 const config = require('./config')
 
 // create reusable transporter object using the default SMTP transport
@@ -25,7 +27,7 @@ exports.sendEmail = (user, next) => {
     text: 'Verify your account', // plain text body
     html: `<div>
       Please verify your account clicking on
-      <a href="http://localhost:3000/verifyAccount?email=${user.email}&token=${user.verifyEmailToken}">this link</a>
+      <a href="${config.APP_HOST_URL}/verifyAccount?email=${user.email}&token=${user.verifyEmailToken}">this link</a>
     </div>`, // html body
   }
 
@@ -34,7 +36,7 @@ exports.sendEmail = (user, next) => {
     if (error) {
       return next(`Error sending email. Details: ${error}`)
     }
-    console.log('Message sent to ', user.email, 'Message id', info.messageId)
+    logger.info('Message sent to ', user.email, 'Message id', info.messageId)
     return info
   })
 }
@@ -48,7 +50,7 @@ exports.sendRestPasswordLinkEmail = (_user, next) => {
     text: 'If you want to reset your password click this link', // plain text body
     html: `<div>
       If you want to reset your password click on
-      <a href="http://localhost:3000/resetPassword?email=${_user.email}&token=${_user.resetPasswordToken}">this link</a>
+      <a href="${config.APP_HOST_URL}/resetPassword?email=${_user.email}&token=${_user.resetPasswordToken}">this link</a>
     </div>`, // html body
   }
 
@@ -57,7 +59,7 @@ exports.sendRestPasswordLinkEmail = (_user, next) => {
     if (error) {
       return next(`Error sending email. Details: ${error}`)
     }
-    console.log('Message sent to ', _user.email, 'Message id', info.messageId)
+    logger.info('Message sent to ', _user.email, 'Message id', info.messageId)
     return info
   })
 }

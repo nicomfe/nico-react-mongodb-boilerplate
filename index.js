@@ -6,6 +6,7 @@ const passport = require('passport')
 
 const dbSession = require('./db/session')
 const connectDb = require('./db/connect')
+const logger = require('./api/utils/logger')
 
 const app = express()
 
@@ -55,10 +56,11 @@ app.get('*', (req, res) => {
 // ERROR HANDLER
 // DO NOT DELETE THE NEXT ITS THE ONLY WAY TO TELL EXPRESS THIS IS THE ERROR HANDLER
 app.use((err, req, res, next) => {
+  logger.debug(err && err.toString())
   res.status(500).send({ message: err && err.toString() })
 })
 
 const port = process.env.PORT || 5000
 app.listen(port)
 
-console.log(`Password generator listening on ${port}`)
+logger.info(`App listening on ${port}`)

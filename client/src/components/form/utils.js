@@ -6,7 +6,7 @@ export const renderTextField = props => (
 )
 
 export const renderEmailField = props => (
-  renderTextField({ label: 'Email', type: 'text', name: 'email', ...props })
+  renderTextField({ label: 'Email', type: 'email', name: 'email', ...props })
 )
 
 export const renderPasswordField = props => (

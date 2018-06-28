@@ -68,7 +68,7 @@ class NavBar extends React.Component {
             </Menu>
           </div>
         ) : (
-          <div>
+          <div className={styles.menuLinks}>
             <Link to="/login">LOGIN</Link>
             <Link to="/signup">SIGNUP</Link>
           </div>

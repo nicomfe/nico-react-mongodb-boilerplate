@@ -1,6 +1,7 @@
 const mongodb = require('mongodb')
 const uuid = require('uuid')
 
+const config = require('./config')
 /*
  http://mongodb.github.io/node-mongodb-native/2.0/tutorials/crud_operations/
  */
@@ -14,7 +15,7 @@ class MongoDbHelper {
 
   start(callback) {
     this.mongoClient.connect(this.url, (err, client) => {
-      this.db = client.db('example_db')
+      this.db = client.db(config.MONGO_DB_NAME)
       callback(this.db)
     })
   }

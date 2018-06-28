@@ -19,11 +19,14 @@ class ResetPassword extends React.Component {
     const { password, confirmPassword } = fields
     const { token, email } = queryString.parse(location.search)
     if (password !== confirmPassword) {
-      alert('Passwords do not match.')
-      return Promise.reject('passwords dont match')
+      const errorMessage = 'Passwords dont match'
+      return Promise.reject(errorMessage)
     }
     return dispatchCreatePassword({ email, verifyEmailToken: token, password, confirmPassword }).then(() => {
-      this.setState({ created: true })
+      setTimeout(() => {
+        // this timeout is for redirecting to login
+        this.setState({ created: true })
+      }, 2000)
     })
   }
 
@@ -32,7 +35,9 @@ class ResetPassword extends React.Component {
     if (created) {
       return <Redirect to="/login" />
     }
-    return (<MasterPage><ResetPasswordForm handleSubmit={this.handleSubmit} /></MasterPage>)
+    return (<MasterPage>
+      <ResetPasswordForm handleSubmit={this.handleSubmit} />
+    </MasterPage>)
   }
 }
 

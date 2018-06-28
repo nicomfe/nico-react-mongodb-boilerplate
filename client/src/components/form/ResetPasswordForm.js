@@ -4,31 +4,41 @@ import Typography from '@material-ui/core/Typography'
 import Button from '../button'
 
 import styles from './form.module.css'
+import InlineNotificationHoc from '../../hocs/InlineNotificationHoc'
 import FormHoc from '../../hocs/FormHoc'
 import { renderPasswordField } from './utils'
 
-const ResetPasswordForm = ({ fields, handleSubmit, handleChange }) => {
-  const onSubmit = (event) => {
+class ResetPasswordForm extends React.Component {
+  onSubmit = (event) => {
     event.preventDefault()
+    const { handleSubmit, fields, setNotification } = this.props
     handleSubmit(fields).then(() => {
-      alert('Password updated')
+      setNotification('Password updated', 'info')
+    }, (errorMessage) => {
+      setNotification(errorMessage, 'error')
     })
   }
 
-  return (<form onSubmit={onSubmit} className={styles.container}>
-    <Typography variant="body2">
-      Please enter your new password
-    </Typography>
-    {renderPasswordField({ onChange: handleChange })}
-    {renderPasswordField({ label: 'Confirm Password', name: 'confirmPassword', onChange: handleChange })}
-    <Button type="submit">Submit</Button>
-  </form>)
+  render() {
+    const { handleChange, getNotification } = this.props
+    return (<form onSubmit={this.onSubmit} className={styles.container}>
+      <Typography variant="body2">
+        Please enter your new password
+      </Typography>
+      {renderPasswordField({ onChange: handleChange })}
+      {renderPasswordField({ label: 'Confirm Password', name: 'confirmPassword', onChange: handleChange })}
+      {getNotification()}
+      <Button type="submit">Submit</Button>
+    </form>)
+  }
 }
 
 ResetPasswordForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  getNotification: PropTypes.func.isRequired,
 }
 
-export default FormHoc(ResetPasswordForm)
+export default FormHoc(InlineNotificationHoc(ResetPasswordForm))
