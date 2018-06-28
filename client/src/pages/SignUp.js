@@ -17,8 +17,11 @@ class Login extends React.Component {
   handleSubmit = (fields) => {
     const { dispatchSignup } = this.props
     const { email, password } = fields
-    return dispatchSignup({ email, password }).then(() => {
-      this.setState({ userCreated: true })
+    return dispatchSignup({ email, password }).then((data) => {
+      if (!data.error) {
+        this.setState({ userCreated: true })
+      }
+      return data
     })
   }
 
