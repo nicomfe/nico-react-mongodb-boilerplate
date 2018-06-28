@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 
+import NotificationText from '../components/notification/NotificationText'
 import MasterPage from '../pages/MasterPage'
 import ResetPasswordForm from '../components/form/ResetPasswordForm'
 import * as authActions from '../redux/auth/actions'
@@ -19,8 +20,8 @@ class ResetPassword extends React.Component {
     const { password, confirmPassword } = fields
     const { token, email } = queryString.parse(location.search)
     if (password !== confirmPassword) {
-      alert('Passwords do not match.')
-      return Promise.reject('passwords dont match')
+      const errorMessage = 'Passwords dont match'
+      return Promise.reject(errorMessage)
     }
     return dispatchCreatePassword({ email, verifyEmailToken: token, password, confirmPassword }).then(() => {
       this.setState({ created: true })
@@ -32,7 +33,9 @@ class ResetPassword extends React.Component {
     if (created) {
       return <Redirect to="/login" />
     }
-    return (<MasterPage><ResetPasswordForm handleSubmit={this.handleSubmit} /></MasterPage>)
+    return (<MasterPage>
+      <ResetPasswordForm handleSubmit={this.handleSubmit} />
+    </MasterPage>)
   }
 }
 

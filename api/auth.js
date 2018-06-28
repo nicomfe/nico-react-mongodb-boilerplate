@@ -97,7 +97,7 @@ router.post('/create_user', (req, res, next) => {
 
     return user.save((saveErr) => {
       if (saveErr) return next(saveErr)
-      emailModule.sendEmail(user)
+      emailModule.sendEmail(user, next)
       return res.status(200).send(JSON.stringify(user))
     })
   })
