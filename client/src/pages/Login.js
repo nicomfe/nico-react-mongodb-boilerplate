@@ -13,7 +13,7 @@ class Login extends React.Component {
   handleSubmit = (fields) => {
     const { dispatchLogin } = this.props
     const { email, password } = fields
-    dispatchLogin({ email, password })
+    return dispatchLogin({ email, password })
   }
 
   render() {

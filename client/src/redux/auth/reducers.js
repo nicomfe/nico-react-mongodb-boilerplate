@@ -33,14 +33,12 @@ export default createReducer(initialState, {
     // email not verified so we dont set current user
     return state.remove('currentUser')
   },
-  [`${SIGNUP}${FAILURE_SUFFIX}`]: (state, action) => {
-    alert(action.error.message)
+  [`${SIGNUP}${FAILURE_SUFFIX}`]: (state) => {
     return state.remove('currentUser')
   },
   [`${GET_CURRENT_SESSION}${SUCCESS_SUFFIX}`]: updateReducerReducer,
-  [`${LOGIN}${FAILURE_SUFFIX}`]: (state, action) => {
+  [`${LOGIN}${FAILURE_SUFFIX}`]: (state) => {
     localStorage.removeItem('currentUser')
-    alert(action.error.message)
     return state.remove('currentUser')
   },
   [`${LOGOUT}${SUCCESS_SUFFIX}`]: (state) => {

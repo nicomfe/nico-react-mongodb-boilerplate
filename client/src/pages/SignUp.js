@@ -17,7 +17,7 @@ class Login extends React.Component {
   handleSubmit = (fields) => {
     const { dispatchSignup } = this.props
     const { email, password } = fields
-    dispatchSignup({ email, password }).then(() => {
+    return dispatchSignup({ email, password }).then(() => {
       alert('User created')
       this.setState({ userCreated: true })
     })
