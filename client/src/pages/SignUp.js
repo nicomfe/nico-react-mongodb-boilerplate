@@ -34,7 +34,7 @@ class Login extends React.Component {
     if (userCreated) {
       return <Redirect to="/confirmEmail" />
     }
-    return (<MasterPage><SignupForm handleSubmit={this.handleSubmit} /></MasterPage>)
+    return (<MasterPage title="Create Account"><SignupForm handleSubmit={this.handleSubmit} /></MasterPage>)
   }
 }
 

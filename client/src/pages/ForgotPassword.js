@@ -25,7 +25,7 @@ class ForgotPassword extends React.Component {
     if (sent) {
       return <Redirect to="/login" />
     }
-    return (<MasterPage><ForgotPasswordForm handleSubmit={this.handleSubmit} /></MasterPage>)
+    return (<MasterPage title="Forgot Password"><ForgotPasswordForm handleSubmit={this.handleSubmit} /></MasterPage>)
   }
 }
 

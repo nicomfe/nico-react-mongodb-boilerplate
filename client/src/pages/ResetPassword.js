@@ -35,7 +35,7 @@ class ResetPassword extends React.Component {
     if (created) {
       return <Redirect to="/login" />
     }
-    return (<MasterPage>
+    return (<MasterPage title="Reset Password">
       <ResetPasswordForm handleSubmit={this.handleSubmit} />
     </MasterPage>)
   }
