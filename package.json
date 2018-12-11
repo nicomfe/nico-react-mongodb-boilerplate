@@ -27,6 +27,7 @@
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "devDependencies": {
+    "babel-eslint": "10.0.1",
     "eslint": "4.15.0",
     "eslint-config-airbnb": "12.0.0",
     "eslint-plugin-import": "1.16.0",

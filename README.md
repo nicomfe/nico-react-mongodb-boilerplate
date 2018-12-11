@@ -1,3 +1,7 @@
+## Setup
+- Set env Variables
+EMAIL_HOST, EMAIL_USER, EMAIL_PASS, EMAIL_PORT, APP_HOST, MONGODB_URI, NODE_ENV
+
 Start Mongo
 mongod --dbpath <PATH_TO_YOUR_DB_FILE>
 
