@@ -113,7 +113,7 @@ router.get('/get_current_session', (req, res) => {
   if (req.isAuthenticated()) {
     return res.status(200).send(JSON.stringify(req.user))
   }
-  return res.status(200).send(JSON.stringify({}))
+  return res.status(200)
 })
 
 router.patch('/verify_account', (req, res, next) => {
