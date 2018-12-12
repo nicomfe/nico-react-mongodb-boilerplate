@@ -27,8 +27,8 @@ function updateUser(req, res, next) {
 }
 
 /**
-* Middleware for all the routes in this file
-**/
+ * Middleware for all the routes in this file
+ */
 router.use((req, res, next) => {
   // this is just an example delete if not needed
   next()
@@ -113,7 +113,7 @@ router.get('/get_current_session', (req, res) => {
   if (req.isAuthenticated()) {
     return res.status(200).send(JSON.stringify(req.user))
   }
-  return res.status(200)
+  return res.status(200).send(JSON.stringify({}))
 })
 
 router.patch('/verify_account', (req, res, next) => {

@@ -1,5 +1,4 @@
-import { createMuiTheme } from 'material-ui/styles'
-
+import { createMuiTheme } from '@material-ui/core/styles'
 // find full object data here: https://material-ui.com/customization/default-theme/
 
 const theme = createMuiTheme({
