@@ -78,7 +78,11 @@ router.post('/forgot_password', (req, res, next) => {
     const _user = Object.assign(user, { resetPasswordToken: uuid(), resetPasswordExpires: expireDate })
     return _user.save((saveErr) => {
       if (saveErr) return next(saveErr)
-      emailModule.sendRestPasswordLinkEmail(_user, next)
+      try {
+        emailModule.sendRestPasswordLinkEmail(_user)
+      } catch(e) {
+        return next(e)
+      }
       return res.status(200).send({ message: 'We sent you an email with the link to reset your password' })
     })
   })
@@ -97,7 +101,12 @@ router.post('/create_user', (req, res, next) => {
 
     return user.save((saveErr) => {
       if (saveErr) return next(saveErr)
-      emailModule.sendEmail(user, next)
+      try {
+        emailModule.sendEmail(user)
+      } catch(e) {
+        return next(e)
+      }
+
       return res.status(200).send(JSON.stringify(user))
     })
   })
@@ -125,7 +134,11 @@ router.patch('/verify_account', (req, res, next) => {
       if (req.body.token === existingUser.verifyEmailToken) {
         return Object.assign(existingUser, { emailVerified: true }).save((err, updateData) => {
           if (err) { return next(err) }
-          return res.status(200).send(updateData)
+          return req.logIn(user, (loginErr) => {
+            if (loginErr) return next(loginErr)
+            return res.status(200).send(updateData)
+          })
+
         })
       }
       return next('Invalid token')
